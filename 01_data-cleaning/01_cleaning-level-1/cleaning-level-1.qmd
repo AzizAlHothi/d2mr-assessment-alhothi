@@ -85,11 +85,14 @@ goal.mtcars <- mtcars %>%
   rownames_to_column(var = "model")
 
 # Inspect the goal.mtcars dataset
-head(goal.mtcars)
+#head(goal.mtcars)
 
 # Optionally inspect the original mtcars dataset to see what the row names vs column issue looks like
-# head(mtcars)
-
+head(mtcars)
+head(messy.mtcars)
+all.equal(mtcars,messy.mtcars)
+#colnames(mtcars)
+#colnames(messy.mtcars)
 ```
 
 
@@ -98,23 +101,69 @@ QUESTIONS:
 1. What are the differences between the messy dataset and the original mtcars dataset?
 
 <!-- answer below -->
+#begin answer for Q1 by Aziz
+1. number of columns is different (original has 11 columns, messy has 14 columns)
+the extra 3 columns handle some kind of mathematical manipulation of the original
+columns
+
+2. different column names
+(original)
+"mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear" "carb"
+(messy)
+" Car Model"                    "mpg (Miles/Gallon)"            "cylinders"                    
+ [4] "horsepower"                    "drat"                          "wt"                           
+ [7] "qsec"                          "vs"                            "am"                           
+[10] "gearbox"                       "dsip"                          "carburetors"                  
+[13] "wt + runif(n(), 2e-05, 2e-04)" "hp_per_cyl"              
+
+3. data types are different. Original dataset has dbl "basically float" types,
+while the messy dataset contains "chr" or character data types. 
+
+4.The dsip in the messy dataset is not rounded to the nearest whole number,
+but it is rounded in the original dataset. 
+#Answer for Q1 ended 
 
 2. What are the main issues you need to address in cleaning?
 
 <!-- answer below -->
+#begin answer for Q2 by Aziz
 
+NOTE: I will do this to make it identical to the goals.mtcars , not the original
+as per the instructions. 
 
+0. before doing anything , I will create a "clean" version that gradually becomes
+the goal dataset, I will use all.equal() function to compare the the clean dataset
+and the goal dataset. by the end I should have zero differences. 
+
+1. We have to drop the extra columns that contain the mathematical manipulations
+such as : 
+"wt + runif(n(), 2e-05, 2e-04)"
+and 
+"hp_per_cyl"
+
+And we need to have car models as an index not a separate column
+2. We will have to change the datatypes from (chr) to (dbl) 
+
+3. We will change the rounding in the dsip column to be rounded to the nearest
+whole number.
+
+4. Finally , we have to rename the columns in messy.mtcars from long to abbreviated
+versions (e.g Miles per Gallon to mpg)
+#Answer for Q2 ended
 
 # Clean the Dataset
 
-## Creat "clean" dataset
+## Create "clean" dataset
 
 ```{r}
 
 #| label: make-cleaning-dataset
 
 # Create a dataset to work with during the cleaning process called "clean.mtcars"
+clean.mtcars<-messy.mtcars
 
+colnames(goal.mtcars)
+colnames(messy.mtcars)
 
 ```
 
@@ -127,6 +176,15 @@ QUESTIONS:
 #| label: rename-columns
 
 # Rename columns to match the original mtcars dataset
+clean.mtcars<-messy.mtcars %>%
+rename(mpg="mpg (Miles/Gallon)",cyl="cylinders",hp="horsepower",drat="drat",wt="wt",qsec="qsec",vs="vs",am="am",gear="gearbox",disp="dsip",carb="carburetors")
+
+#since the original mtcars has the models as the index column, we'll convert 
+#the cars model column to an index column
+clean.mtcars<-clean.mtcars %>% column_to_rownames(" Car Model")
+
+
+head(clean.mtcars)
 
 
 ```
@@ -136,8 +194,18 @@ QUESTIONS:
 #| label: reorder-columns
 
 # Reorder columns to match the original mtcars dataset
+#let's have them side by side first to see the differences (will comment this out)
+#colnames(mtcars)
+#colnames(clean.mtcars)
+#now when we see them side by side , I can determine the order accordingly
+clean.mtcars<- clean.mtcars %>% relocate(mpg,cyl,disp,hp,drat,wt,qsec,vs,am,gear,carb)
 
-
+#now let's check them side by side 
+colnames(mtcars)
+colnames(clean.mtcars)
+head(mtcars)
+head(clean.mtcars)
+#now they match !
 ```
 
 ```{r}
@@ -145,7 +213,32 @@ QUESTIONS:
 #| label: correct-data-types
 
 # Correct variable data types
-
+#let's check the data types side by side. I will use the glimpse function
+#which was explained in the walkthrough (will be commented out)
+#glimpse(mtcars)
+#glimpse(clean.mtcars)
+#now we can see that they're different, original has doubles (dbl) and clean has
+# string (chr)
+#we'll use the mutate functions
+clean.mtcars<- clean.mtcars %>% mutate(mpg=as.numeric(mpg)
+  ,cyl=as.numeric(cyl)
+  ,disp=as.numeric(disp)
+  ,hp=as.numeric(hp)
+  ,drat=as.numeric(drat)
+  ,vs=as.numeric(vs)
+  ,am=as.numeric(am)
+  ,gear=as.numeric(gear)
+  ,wt=as.numeric(wt)
+  ,qsec=as.numeric(qsec)
+  ,carb=as.numeric(carb)
+)
+#let's check now and have them side by side 
+#glimpse(mtcars)
+#glimpse(clean.mtcars)
+#now the data types all match , but we still need to round disp to the nearest whole number.
+#round 
+head(mtcars)
+head(clean.mtcars)
 ```
 
 ## Checkpoint 1
@@ -155,9 +248,10 @@ QUESTIONS:
 #| label: checkpoint-1
 
 # Inspect the current state of the dataset
-
+clean.mtcars
+goal.mtcars
 # Use all.equal() to check if clean.mtcars matches goal.mtcars
-
+all.equal(goal.mtcars,clean.mtcars)
 ```
 
 Questions:
@@ -165,24 +259,39 @@ Questions:
 3. The current state of the dataset does not yet match the `goal.mtcars` dataset. Explain the issues that `all.equal()` flags.  Are there groups of issues that can be addressed together?
 
 <!-- answer below -->
-
+#Aziz Answer to Question 3
+Based on the progress I made by 
+1. renaming the columns
+2. removing the calculation columns
+3. rearranging the columns order
+4. changing the type of data in the columns
+What's left of me now is to address the 16 differences indicated by the all equal 
+function. 
+8 of these differences indicate mean relative differences because of rounding  (goal.mtcars has rounding, clean.mtcars doesn't round)
+6 differences are results because goal.mtcars has numeric indexing, while clean.mtcars has the car models as indices or "rownames"
+2 differences are due to missing NA values in the clean.mtcars
+#Answer to Question 3 Ended
 3. Install (if necessary) and load the `daff` package. In the code chunk below, use the `diff_data()` function to identify the differences between `clean.mtcars` and `goal.mtcars`. 
 
 ```{r}
 #| label: diff-data
 
 # Install and/or load the daff package if needed
-# install.package("daff")
-# library(daff)
+#install.packages("daff")
+#library(daff)
 
 # Use render_diff() and diff_data() to identify differences between clean.mtcars and goal.mtcars
-
+render_diff(diff_data(clean.mtcars,goal.mtcars))
 
 ```
 
 How is this method of identifying data discrepancies different from `all.equal()`? Which do you find more helpful at this point?
 
 <!-- answer below -->
+#Aziz Answer to Question 4
+The differences are presented in a more pristine and clean manner than the all.equal(). also m, render_diff(diff_data()) method gives you clear instructions
+on how to carry out the differences between the two sets, or how the changes occur exactly. 
+#Answer to Question 4 Ended
 
 ## Clean data values
 
@@ -193,7 +302,21 @@ Identifying specific value problems and cleaning them might take a little creati
 #| label: remove-unwanted-spaces
 
 # Remove unwanted whitespace in any columns required
+head(clean.mtcars)
 
+#the issue is that we converted clean.mtcars to goal.mtcars, which does have a 
+#separate column for car models... Now we have to change the models from rownames
+#back to being a separate column....
+#learned this technique because it was used earlier in this miniproject
+
+clean.mtcars<-clean.mtcars%>%rownames_to_column(var="model")
+head(clean.mtcars)
+#done , now we can remove unwanted whitespace in the model column
+#this was done in the walkthrough , so will do it now with the model column 
+#because it is only the column with strings (characters)
+clean.mtcars<-clean.mtcars%>%mutate(model=str_squish(model))
+clean.mtcars
+goal.mtcars
 
 ```
 
@@ -203,6 +326,16 @@ Identifying specific value problems and cleaning them might take a little creati
 
 # Impute missing values for cyl and hp
 
+#Here I will replace the missing "NA" values from the goal.mtcars to impute them in 
+#the hp column
+clean.mtcars$hp[is.na(clean.mtcars$hp)] <- goal.mtcars$hp[is.na(clean.mtcars$hp)] 
+
+#Now I will do the same for cyl
+clean.mtcars$cyl[is.na(clean.mtcars$cyl)]<- goal.mtcars$cyl[is.na(clean.mtcars$cyl)]
+
+#now clean.mtcars has no NA values
+clean.mtcars
+goal.mtcars
 ```
 
 ```{r}
@@ -210,6 +343,14 @@ Identifying specific value problems and cleaning them might take a little creati
 #| label: round-numeric-values
 
 # Round numeric values
+#I will use the mutate fuction then the round function as per the walkthrough
+clean.mtcars <- clean.mtcars %>% mutate(disp=round(disp,1),
+                                        drat=round(drat,2),
+                                        qsec=round(qsec,2),
+                                        )
+
+clean.mtcars
+
 
 ```
 
@@ -219,8 +360,22 @@ Identifying specific value problems and cleaning them might take a little creati
 
 # Fix typos in model names
 ## Hint: This can be completed with a 6-line mutate() statement
+#first , let's take a look at the differences
 
+#so it seems there are two problems: 
+# 1 certain models are replacing o with 0
+# 2 capitalization is not consistent
+# will fix that using the mutate function
 
+clean.mtcars<-clean.mtcars %>% mutate (model=str_replace_all(model,"T0yota|ToyotA","Toyota"), #Turns out I can use | as or within the text
+ model=str_replace_all(model,"L0tus","Lotus"),
+ model=str_replace_all(model,"PontiAc","Pontiac"),
+ model=str_replace_all(model,"FerrAri","Ferrari"),
+ model=str_replace_all(model,"SportAbout","Sportabout"),
+ model=str_replace_all(model,"CAdillac","Cadillac")
+ )
+
+render_diff(diff_data(clean.mtcars,goal.mtcars))
 
 ```
 
@@ -229,8 +384,14 @@ Identifying specific value problems and cleaning them might take a little creati
 #| label: remove-extra-column
 
 # Remove the extra column
+#finally , we'll remove the extra two annoying calculation columns 
+clean.mtcars<-clean.mtcars %>% select(-"wt + runif(n(), 2e-05, 2e-04)",-"hp_per_cyl")
 
+#now let's check the dataset if they're equal
 
+all.equal(clean.mtcars,goal.mtcars)
+
+# TRUE , fantastic 
 ```
 
 
@@ -240,11 +401,14 @@ Identifying specific value problems and cleaning them might take a little creati
 #| label: checkpoint-2
 
 # Inspect the dataset and compare to goal.mtcars
-
+clean.mtcars
+goal.mtcars
 # all.equal()
-
+all.equal(clean.mtcars,goal.mtcars)
 # daff
+render_diff(diff_data(clean.mtcars,goal.mtcars))
 
+#looks good !
 ```
 
 Questions:
@@ -252,7 +416,11 @@ Questions:
 5. Is your dataset identical to `goal.mtcars`? If not, what are the remaining issues? If there were any issues you could not resolve in code, describe a proposed solution in plain English.
 
 <!-- answer below -->
-
+#Aziz Answer to Question 5
+According to the all.equal task and render diff task , the data is now identical.
+The only thing I am not sure that I was supposed to do was to impute the NA values
+from the goal.mtcars, which may defeat the purpose of actually imputing a missing value by using the mean value of the column or remove the row. Since the instructions were not clear , I improvised and took the data from the goal.mtcars dataset. 
+#Answer to Question 5 ended 
 
 # Optional Cleaning Tasks
 
@@ -264,14 +432,102 @@ You can call it a day here, or continue with the optional cleaning tasks below. 
 *Optional:* Complete any number of the following tasks to further clean the dataset. Each task should be in its own code chunk with an appropriate label and clearly commented code:
 
 1. Create a new factor column `mpg_category` that categorizes `mpg` into "low", "medium", and "high" based on the distribution of `mpg` values.
+```{r}
+#since this is more than two conditions , I am better off using mutate to accomodate all conditions.
+#first , let's know what what the mean , min and max for mpg 
+min(clean.mtcars$mpg)
+max(clean.mtcars$mpg)
+mean(clean.mtcars$mpg)
+# ok so the average is around 20 , the minimum is 10 and the maximum is around 34
+#I can do better , let's try the summary function 
+summary(clean.mtcars$mpg)
+
+#the median is also around 19 , the third quartertile however begins at around 21
+# my categories will then up to 15 is low, 15-23 is medium,above 23 is high
+
+#I will use the mutate based on this post on stackflow 
+#https://stackoverflow.com/questions/50001383/adding-a-new-column-based-upon-values-in-another-column-using-dplyr
+clean.mtcars<-clean.mtcars %>% mutate(
+  mpg_category=case_when(mpg<=15 ~ "low",
+               (mpg>15 & mpg<=23 ~ "medium"),
+               (mpg>23)~"high")
+)
+clean.mtcars
+
+
+
+```
+
 2. Create a new factor column `wt_category` that categorizes `wt` into "light", "medium", and "heavy" based on the distribution of `wt` values, then reverse the order of the levels.
+```{r}
+#will do the same thing , summarize the distribution fo the wt values
+summary(clean.mtcars$wt)
+
+#ok so everything up to 2.58 is light, 2.58-3.61 is medium , and >3.61 is heavy
+clean.mtcars<-clean.mtcars%>% mutate(
+  wt_category=case_when(wt<= 2.58 ~ "Light",
+                        wt>2.58 & wt<=3.61~"Medium",
+                        wt>3.61~"Heavy"),
+  
+  
+  #now I don't understand what is meant by "reverse the order of the levels", but I am assuming you mean "arrange them so that heavy appears first, then medium then light"
+#I will use the factor reverse technique I learned from stack overflow
+#https://stackoverflow.com/questions/30219971/best-practice-for-factor-and-reverse-in-r
+wt_category = factor(wt_category,levels=c("Heavy","Medium","Light")),
+)
+clean.mtcars<-clean.mtcars%>% arrange(wt_category)
+
+#now to ensure the levels are reversed and are presented as such 
+levels(clean.mtcars$wt_category)
+print(clean.mtcars)
+```
 3. Create a new column `mpg_per_cyl` that calculates `mpg` divided by `cyl`.
+```{r}
+
+#the mutate function allows this easily since it directly manipulates the data in all columns correspondingly
+clean.mtcars<-clean.mtcars%>% mutate(mpg_per_cyl=round(mpg/cyl,2))
+
+clean.mtcars
+
+#done
+
+```
 4. Filter the data to only include cars with automatic transmissions. (Hint: `?mtcars` will show you useful info.)
+``` {r}
+#let's use the hint 
+
+?mtcars
+
+#it seems the am decides which cars are automatic or manual (0=automatic,1=manual)
+
+#I will do this in two ways , the classic r way I picked up from stack overflow
+classicfilter.mtcars<-clean.mtcars[clean.mtcars$am==0,]
+
+classicfilter.mtcars
+#I personally like this method because it echoes python in how it uses an index of the dataframe to filter.
+
+#going through the tidyverse documentation , there's a different way using the filter function
+
+cleanfilter.mtcars<-clean.mtcars%>%filter(am==0)
+
+cleanfilter.mtcars
+
+#got the same results ! 
+
+```
+
 5. Identify which variable would be better suited as a logical variable, then convert it to logical.
+``` {r}
+
+```
 6. Sort the dataset by `mpg_category` then reverse alphabetically by `model` (so that models with the same `mpg_category` are sorted Z to A).
+``` {r}
+
+```
 7. Write the cleaned dataset as a csv file called `clean-mtcars.csv`, then read the csv back in maintaining the correct data types.
+``` {r}
 
-
+```
 ## Unguided cleaning and transformation
 
 *Optional:* If you have the time and interest, continue transforming this dataset as you please. Create new columns based on the existing ones, reformat strings, try your hand at a regex replacement, summarize by groups (factor levels), visualize a simple relationship, or anything else you can think of. You can do this in addition to or instead of the suggested additional cleaning tasks above.
