@@ -1,3 +1,13 @@
+# d2mr-assessment-alhothi
+Hello, a person reading this. 
+
+I am Abdulaziz AlHothi; you're reading the forked repository of d2mr class assessments. 
+
+I will update the assessments that are committed from my end to this repository so that you can see the natural progress of my assessment completion. 
+
+- As of 17 Jan 2025, I finished all the tasks in Assignment: Clean the mtcars Dataset (Level 1)
+
+
 # d2mr-assessment
 
 This is a centralized directory for D2MR mini-project assessment materials. The purpose of this repository is to provide a single location for all mini-projects, which will allow you to easily access and complete them and your instructors to efficiently grade them.
