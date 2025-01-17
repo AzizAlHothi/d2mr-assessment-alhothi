@@ -518,20 +518,87 @@ cleanfilter.mtcars
 
 5. Identify which variable would be better suited as a logical variable, then convert it to logical.
 ``` {r}
+#first, I will try to know the mtcars columns and 
+?mtcars
+#so we see that vs (v-shaped or straight engine) and am (automatic or manual) are two logical variables. I will choose am for this question
+clean.mtcars<- clean.mtcars%>% mutate(am=as.logical(am))
 
+#to make it make sense , I will rename am to manual ? that way TRUE or FALSE makes sense
+clean.mtcars<-clean.mtcars%>%rename("manual?"=am)
+
+clean.mtcars
 ```
 6. Sort the dataset by `mpg_category` then reverse alphabetically by `model` (so that models with the same `mpg_category` are sorted Z to A).
 ``` {r}
-
+#using the arrange function from dplyr and the desc function , learned from https://stackoverflow.com/questions/68311426/nested-functions-arrange-and-desc
+#I should be able to introduce two levels of grouping 
+clean.mtcars<-clean.mtcars%>%arrange(mpg_category,desc(model))
+clean.mtcars
 ```
 7. Write the cleaned dataset as a csv file called `clean-mtcars.csv`, then read the csv back in maintaining the correct data types.
 ``` {r}
+# Referring to this post https://stackoverflow.com/questions/62006325/export-r-data-to-csv 
+#the command line is simple and is similar to python , which I am familiar with
+
+#let me first get to know the arguments of this line 
+?write.csv
+#so the reaosn why we have to set the row.names=FALSE is because originally it's set as TRUE , and we do not necessarily want that for this csv. 
+write.csv(clean.mtcars,"/Users/abdulaziz/Desktop/University of Chicago/clean-mtcars.csv",row.names=FALSE)
 
 ```
 ## Unguided cleaning and transformation
 
 *Optional:* If you have the time and interest, continue transforming this dataset as you please. Create new columns based on the existing ones, reformat strings, try your hand at a regex replacement, summarize by groups (factor levels), visualize a simple relationship, or anything else you can think of. You can do this in addition to or instead of the suggested additional cleaning tasks above.
+``` {r}
+#Ok, let's say I want to group cars by their country of manufacture.And then make some statistical manipulations to inference cars stereotypes from specific countries
 
+#in order to do this, I have to do the following steps 
+
+#STEP 1: use regex to extract the first word, and save that as the car's "Make"
+
+#a general rule in the mtcars dataset , is that the cars "Make" or manufacturing factory is mentioned in the first word. 
+
+#I used this regex cheat sheet from gitlab:https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf
+
+#I will create a new column and save the first word in the model to it 
+#Since there are no whitespaces before the first word, I am telling the code to detect the first whitespace, remove IT and everything AFTER IT , and replace it with nothing. 
+clean.mtcars$Make=sub("\\s.*","",clean.mtcars$model)
+clean.mtcars
+
+#STEP 2: I will use my car knowledge (and wikipedia) and the case_when function to sort them ,
+
+clean.mtcars<-clean.mtcars%>% mutate(Country=case_when(Make%in% c("Toyota","Honda","Mazda","Datsun") ~"Japan",
+  Make%in% c("Porsche","Merc")~"Germany",#using %in% allows for an OR logic in case_when
+  Make=="Lotus"~"United Kingdom",
+  Make%in%         c("Lincoln","Duster","Pontiac","Chrysler","Camaro","Cadillac","AMC","Dodge","Ford","Hornet","Valiant")~"USA", 
+  Make=="Volvo"~"Sweden",
+  Make%in% c("Ferrari","Fiat","Maserati")~"Italy"))
+
+clean.mtcars
+
+#success !
+#STEP 3: Let's summarize specific car specs per country 
+#the pipeline function in dplyr will make this easy and step-by-step
+
+#let's arrange the countries by the aggregate weight of their cars
+Weight.by.country<-clean.mtcars%>% group_by(Country) %>% summarize(Average.Weight=round(mean(wt,na.rm=TRUE),2))%>%arrange(desc(Average.Weight))
+
+print(Weight.by.country)
+
+#now let's arrange them by horsepower (hypothesis: US will have the highest cuz 'MURICA)
+Hp.by.country<-clean.mtcars%>%group_by(Country)%>%summarize(Average.Horsepower=round(mean(hp,na.rm=TRUE),2))%>%arrange(desc(Average.Horsepower))
+
+
+print(Hp.by.country)
+#p-value equals MURRICCCAA
+
+#ok now let's see horsepower distributed by weight aggregated for all countries
+Horsepower.by.Weight<-clean.mtcars%>%mutate(hppwt=round(hp/wt,2))%>%group_by(Country)%>%summarize(Average.HorsepowerbyWeight=round(mean(hppwt),2))%>%arrange(desc(Average.HorsepowerbyWeight))
+
+print(Horsepower.by.Weight)
+
+#USA came in third. 
+``` 
 
 # Submission & Assessment
 
