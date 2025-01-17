@@ -1,8 +1,6 @@
 # d2mr-assessment-alhothi
 Hello,
 
-y
-
 I am Abdulaziz AlHothi; you're reading the forked repository of d2mr class assessments. 
 
 I will update the assessments that are committed from my end to this repository so that you can see the natural progress of my assessment completion. 
