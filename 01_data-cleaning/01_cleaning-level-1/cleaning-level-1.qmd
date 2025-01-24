@@ -101,7 +101,8 @@ QUESTIONS:
 1. What are the differences between the messy dataset and the original mtcars dataset?
 
 <!-- answer below -->
-#begin answer for Q1 by Aziz
+#### Begin answer for Question 1 by Aziz 
+
 1. number of columns is different (original has 11 columns, messy has 14 columns)
 the extra 3 columns handle some kind of mathematical manipulation of the original
 columns
@@ -121,15 +122,13 @@ while the messy dataset contains "chr" or character data types.
 
 4.The dsip in the messy dataset is not rounded to the nearest whole number,
 but it is rounded in the original dataset. 
-#Answer for Q1 ended 
+
+#### Answer for Question 1 ended 
 
 2. What are the main issues you need to address in cleaning?
 
 <!-- answer below -->
-#begin answer for Q2 by Aziz
-
-NOTE: I will do this to make it identical to the goals.mtcars , not the original
-as per the instructions. 
+#### Begin answer for Question 2 by Aziz
 
 0. before doing anything , I will create a "clean" version that gradually becomes
 the goal dataset, I will use all.equal() function to compare the the clean dataset
@@ -149,13 +148,14 @@ whole number.
 
 4. Finally , we have to rename the columns in messy.mtcars from long to abbreviated
 versions (e.g Miles per Gallon to mpg)
-#Answer for Q2 ended
+
+#### Answer for Question 2 ended
 
 # Clean the Dataset
 
 ## Create "clean" dataset
 
-```{r}
+```{r miniproject1-1}
 
 #| label: make-cleaning-dataset
 
@@ -171,7 +171,7 @@ colnames(messy.mtcars)
 ## Clean columns/variables
 
 
-```{r}
+```{r miniproject1-2}
 
 #| label: rename-columns
 
@@ -189,7 +189,7 @@ head(clean.mtcars)
 
 ```
 
-```{r}
+```{r miniproject1-3}
 
 #| label: reorder-columns
 
@@ -208,7 +208,7 @@ head(clean.mtcars)
 #now they match !
 ```
 
-```{r}
+```{r miniproject1-4}
 
 #| label: correct-data-types
 
@@ -243,7 +243,7 @@ head(clean.mtcars)
 
 ## Checkpoint 1
 
-```{r}
+```{r miniproject1-5}
 
 #| label: checkpoint-1
 
@@ -260,6 +260,7 @@ Questions:
 
 <!-- answer below -->
 #Aziz Answer to Question 3
+
 Based on the progress I made by 
 1. renaming the columns
 2. removing the calculation columns
@@ -270,15 +271,16 @@ function.
 8 of these differences indicate mean relative differences because of rounding  (goal.mtcars has rounding, clean.mtcars doesn't round)
 6 differences are results because goal.mtcars has numeric indexing, while clean.mtcars has the car models as indices or "rownames"
 2 differences are due to missing NA values in the clean.mtcars
+
 #Answer to Question 3 Ended
 3. Install (if necessary) and load the `daff` package. In the code chunk below, use the `diff_data()` function to identify the differences between `clean.mtcars` and `goal.mtcars`. 
 
-```{r}
+```{r miniproject1-6}
 #| label: diff-data
 
 # Install and/or load the daff package if needed
 #install.packages("daff")
-#library(daff)
+library(daff)
 
 # Use render_diff() and diff_data() to identify differences between clean.mtcars and goal.mtcars
 render_diff(diff_data(clean.mtcars,goal.mtcars))
@@ -289,15 +291,17 @@ How is this method of identifying data discrepancies different from `all.equal()
 
 <!-- answer below -->
 #Aziz Answer to Question 4
+
 The differences are presented in a more pristine and clean manner than the all.equal(). also m, render_diff(diff_data()) method gives you clear instructions
 on how to carry out the differences between the two sets, or how the changes occur exactly. 
+
 #Answer to Question 4 Ended
 
 ## Clean data values
 
 Identifying specific value problems and cleaning them might take a little creativity at times! Use the troubleshooting/debugging workflows we've discussed to get as far as you can.
 
-```{r}
+```{r miniproject1-7}
 
 #| label: remove-unwanted-spaces
 
@@ -320,7 +324,7 @@ goal.mtcars
 
 ```
 
-```{r}
+```{r miniproject1-8}
 
 #| label: impute-missing-values
 
@@ -338,7 +342,7 @@ clean.mtcars
 goal.mtcars
 ```
 
-```{r}
+```{r miniproject1-9}
 
 #| label: round-numeric-values
 
@@ -354,7 +358,7 @@ clean.mtcars
 
 ```
 
-```{r}
+```{r miniproject1-10}
 
 #| label: fix-typos
 
@@ -379,7 +383,7 @@ render_diff(diff_data(clean.mtcars,goal.mtcars))
 
 ```
 
-```{r}
+```{r miniproject1-11}
 
 #| label: remove-extra-column
 
@@ -397,7 +401,7 @@ all.equal(clean.mtcars,goal.mtcars)
 
 ## Checkpoint 2
 
-```{r}
+```{r miniproject1-12}
 #| label: checkpoint-2
 
 # Inspect the dataset and compare to goal.mtcars
@@ -417,9 +421,11 @@ Questions:
 
 <!-- answer below -->
 #Aziz Answer to Question 5
+
 According to the all.equal task and render diff task , the data is now identical.
 The only thing I am not sure that I was supposed to do was to impute the NA values
 from the goal.mtcars, which may defeat the purpose of actually imputing a missing value by using the mean value of the column or remove the row. Since the instructions were not clear , I improvised and took the data from the goal.mtcars dataset. 
+
 #Answer to Question 5 ended 
 
 # Optional Cleaning Tasks
@@ -432,7 +438,7 @@ You can call it a day here, or continue with the optional cleaning tasks below. 
 *Optional:* Complete any number of the following tasks to further clean the dataset. Each task should be in its own code chunk with an appropriate label and clearly commented code:
 
 1. Create a new factor column `mpg_category` that categorizes `mpg` into "low", "medium", and "high" based on the distribution of `mpg` values.
-```{r}
+```{r miniproject1-guided-additional-1}
 #since this is more than two conditions , I am better off using mutate to accomodate all conditions.
 #first , let's know what what the mean , min and max for mpg 
 min(clean.mtcars$mpg)
@@ -459,7 +465,7 @@ clean.mtcars
 ```
 
 2. Create a new factor column `wt_category` that categorizes `wt` into "light", "medium", and "heavy" based on the distribution of `wt` values, then reverse the order of the levels.
-```{r}
+```{r miniproject1-guided-additional-2}
 #will do the same thing , summarize the distribution fo the wt values
 summary(clean.mtcars$wt)
 
@@ -482,7 +488,7 @@ levels(clean.mtcars$wt_category)
 print(clean.mtcars)
 ```
 3. Create a new column `mpg_per_cyl` that calculates `mpg` divided by `cyl`.
-```{r}
+```{r miniproject1-guided-additional-3}
 
 #the mutate function allows this easily since it directly manipulates the data in all columns correspondingly
 clean.mtcars<-clean.mtcars%>% mutate(mpg_per_cyl=round(mpg/cyl,2))
@@ -493,7 +499,7 @@ clean.mtcars
 
 ```
 4. Filter the data to only include cars with automatic transmissions. (Hint: `?mtcars` will show you useful info.)
-``` {r}
+``` {r miniproject1-guided-additional-4}
 #let's use the hint 
 
 ?mtcars
@@ -517,7 +523,7 @@ cleanfilter.mtcars
 ```
 
 5. Identify which variable would be better suited as a logical variable, then convert it to logical.
-``` {r}
+``` {r miniproject1-guided-additional-5}
 #first, I will try to know the mtcars columns and 
 ?mtcars
 #so we see that vs (v-shaped or straight engine) and am (automatic or manual) are two logical variables. I will choose am for this question
@@ -529,42 +535,54 @@ clean.mtcars<-clean.mtcars%>%rename("manual?"=am)
 clean.mtcars
 ```
 6. Sort the dataset by `mpg_category` then reverse alphabetically by `model` (so that models with the same `mpg_category` are sorted Z to A).
-``` {r}
+``` {r miniproject1-guided-additional-6}
 #using the arrange function from dplyr and the desc function , learned from https://stackoverflow.com/questions/68311426/nested-functions-arrange-and-desc
 #I should be able to introduce two levels of grouping 
 clean.mtcars<-clean.mtcars%>%arrange(mpg_category,desc(model))
 clean.mtcars
 ```
 7. Write the cleaned dataset as a csv file called `clean-mtcars.csv`, then read the csv back in maintaining the correct data types.
-``` {r}
+``` {r miniproject1-guided-additional-7}
 # Referring to this post https://stackoverflow.com/questions/62006325/export-r-data-to-csv 
 #the command line is simple and is similar to python , which I am familiar with
-
 #let me first get to know the arguments of this line 
 ?write.csv
-#so the reaosn why we have to set the row.names=FALSE is because originally it's set as TRUE , and we do not necessarily want that for this csv. 
-write.csv(clean.mtcars,"/Users/abdulaziz/Desktop/University of Chicago/clean-mtcars.csv",row.names=FALSE)
-
+?read.csv #both of these functions won't suffice in retaining the data types
+#using the readr functions (write_csv,read_csv), it should automatically retain the data types
+write_csv(clean.mtcars,"/Users/abdulaziz/Desktop/University of Chicago/clean-mtcars.csv")
+clean.mtcars.csv<-read_csv("/Users/abdulaziz/Desktop/University of Chicago/clean-mtcars.csv",col_types=cols(wt_category=col_factor())) #wt_category ought to be specified as factorß
+clean.mtcars
+clean.mtcars.csv
 ```
 ## Unguided cleaning and transformation
 
 *Optional:* If you have the time and interest, continue transforming this dataset as you please. Create new columns based on the existing ones, reformat strings, try your hand at a regex replacement, summarize by groups (factor levels), visualize a simple relationship, or anything else you can think of. You can do this in addition to or instead of the suggested additional cleaning tasks above.
-``` {r}
-#Ok, let's say I want to group cars by their country of manufacture.And then make some statistical manipulations to inference cars stereotypes from specific countries
 
-#in order to do this, I have to do the following steps 
+# Aziz's ambitious unguided cleaning and transformation 
 
-#STEP 1: use regex to extract the first word, and save that as the car's "Make"
+To demonstrate some of the abilities I want to master in R , I will create an extra column to identify the country of origin for each of the car makes. Then , I will create rudimentary statistics , plots, graphs and hypotheses to make inferences about the auto-industry for each country. 
 
-#a general rule in the mtcars dataset , is that the cars "Make" or manufacturing factory is mentioned in the first word. 
+
+
+
+### STEP 1: Create the Make Column
+Let's demonstrate how we can create a new column and use the StringR library to extract the first word in the model column (which is usually the make of the car)
+
+``` {r miniproject1-unguided-additional- Extracting the Make}
 
 #I used this regex cheat sheet from gitlab:https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf
 
 #I will create a new column and save the first word in the model to it 
-#Since there are no whitespaces before the first word, I am telling the code to detect the first whitespace, remove IT and everything AFTER IT , and replace it with nothing. 
-clean.mtcars$Make=sub("\\s.*","",clean.mtcars$model)
-clean.mtcars
+#Since there are no whitespaces before the first word, I am telling the code to detect the first whitespace, I am telling the code to EXTRACT EVERYTHING BEFORE THE FIRST SPACE 
 
+library(stringr)
+clean.mtcars<-clean.mtcars%>% mutate(Make= str_extract(model,"^[^\\s]+"))
+
+```
+
+
+### STEP 2: Create the Country Column
+``` {r miniproject1-unguided-additiona- Creating the Country}
 #STEP 2: I will use my car knowledge (and wikipedia) and the case_when function to sort them ,
 
 clean.mtcars<-clean.mtcars%>% mutate(Country=case_when(Make%in% c("Toyota","Honda","Mazda","Datsun") ~"Japan",
@@ -577,8 +595,15 @@ clean.mtcars<-clean.mtcars%>% mutate(Country=case_when(Make%in% c("Toyota","Hond
 clean.mtcars
 
 #success !
-#STEP 3: Let's summarize specific car specs per country 
-#the pipeline function in dplyr will make this easy and step-by-step
+``` 
+
+
+
+### STEP 3: Basic Descriptive Statistics 
+
+Now that we have successfully added two new columns (Make and Country), we can establish some basic descriptive statistics using arranged tables
+
+``` {r miniproject1-unguided-additional-basic statistics and rankings}
 
 #let's arrange the countries by the aggregate weight of their cars
 Weight.by.country<-clean.mtcars%>% group_by(Country) %>% summarize(Average.Weight=round(mean(wt,na.rm=TRUE),2))%>%arrange(desc(Average.Weight))
@@ -597,9 +622,65 @@ Horsepower.by.Weight<-clean.mtcars%>%mutate(hppwt=round(hp/wt,2))%>%group_by(Cou
 
 print(Horsepower.by.Weight)
 
+clean.mtcars$Make=sub("\\s.*","",clean.mtcars$model)
+
 #USA came in third. 
 ``` 
 
+### STEP 4: Create descriptive plots and figures 
+```{r miniproject1-unguided-additional-basic statistics and rankings}
+#The packages ggplot2 and ggpattern will allows to maximally customize our plots and figures. 
+
+library(ggplot2)
+library(ggpattern)
+
+#We will start with the one of the tables created for Average Horsepower/Weight for each country
+#this line below is the setup for the plot , but not the plot itself 
+ggplot(data = Horsepower.by.Weight, aes(x = Country, y = Average.HorsepowerbyWeight, fill = Country)) + #I want each country to have its own color, thus the fill = Country argument
+
+  geom_col(color="black", #setting the borders of the bars as black
+           width=0.7)+ #the width of each bar set to have a width of .7
+           theme_minimal()+ #sets the background as white 
+           theme(axis.text.x=element_text(angle=45,hjust=1)+#makes the x-labels rotated, hjust adjusts it horizontally
+           theme(plot.title= element_text(hjust=0.5))
+           )
+            
+
+# Let's try another set of data with another type of plot s
+# to ensure that the cylinders are dealt with discretely rather than a continuum
+# I will convert the cyl column to factor
+clean.bp.mtcars<-clean.mtcars #creating an intermediary database with cyl as factors
+clean.bp.mtcars$cyl<-as.factor(clean.bp.mtcars$cyl)
+#Now will plot the hp as y-axis and cyl as x-axis in a boxplot
+ggplot(data= clean.bp.mtcars, aes(x=cyl,hp,fill=cyl))+
+  geom_boxplot_pattern(color="black", #here is where I make use of the ggpatterns package
+                       pattern = "stripe", #I will a stripe pattern as an aesthetic
+                       pattern_color="white", #the stripes will be colored with white
+                       pattern_angle=45,#the stripes will be tilted at an angle of 45 deg
+                       pattern_density=0.01, # a single stripe will be 0.01 thick
+                       pattern_spacing=0.02) + #the space between them will be 0.02
+                       labs(title= "Figure 1: Horsepower Generated by no. of Cylinders",
+                            x="No. of Cylinders",
+                            y="Horsepower (hp)",
+                            fill="No. of Cylinders")
+
+```
+### STEP 5: Hypothesis testing and visualization
+##### Establishing a Hypothesis and a test
+With the data available after cleaning, we can now come up with a hypothesis by inspecting the data, 
+and testing our hypothesis statistically.
+```{r miniproject1-unguided-additional-Hypothesis,testing and visualization}
+#| label: The Hypothesis and the Test 
+# My hypothesis is that cars with higher weight will have lower mpg 
+#in linear regression terms, weight (wt) is a negative coefficient of mpg 
+H1.test<-lm(mpg~wt, data=clean.mtcars) #built-in stats package uses lm() as linear regression
+summary(H1.test)
+#Results are indeed significant and the coefficient is negative
+#Let's include another variable , horsepower, as a predictor for mpg (hypothesis: it is a negative predictor)
+H2.test<-lm(mpg~wt+hp,data=clean.mtcars)
+summary(H2.test)
+#Horsepower is a significant negative predictor but with a minimal effect
+```
 # Submission & Assessment
 
 To submit:
@@ -609,7 +690,7 @@ To submit:
     2. Indicate which objectives you are meeting for the first time (if any)
     3. Complete any relevant open-ended items
 2. Push your changes to your centralized assignment repository on GitHub. 
-3. Confirm that Dr. Dowling nad your section TA are added as collaborators to your repository.
+3. Confirm that Dr. Dowling and your section TA are added as collaborators to your repository.
 4. Submit your work in your next open mini-project assignment by including the following information in the text box:
     1. The title of the assignment: "Assignment: Clean the mtcars Dataset (Level 1)"
     2. A link to the **directory** for this assignment in your centralized assignment repo
