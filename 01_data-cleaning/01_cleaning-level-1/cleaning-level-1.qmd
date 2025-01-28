@@ -552,7 +552,7 @@ clean.mtcars
 write_csv(clean.mtcars,"/Users/abdulaziz/Desktop/University of Chicago/clean-mtcars.csv")
 clean.mtcars.csv<-read_csv("/Users/abdulaziz/Desktop/University of Chicago/clean-mtcars.csv",col_types=cols(wt_category=col_factor())) #wt_category ought to be specified as factorß
 clean.mtcars
-clean.mtcars.csv
+clean.mtcars.csv 
 ```
 ## Unguided cleaning and transformation
 

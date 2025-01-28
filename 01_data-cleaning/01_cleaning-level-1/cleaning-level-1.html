@@ -1,0 +1,2315 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Level 1 Data Cleaning: Clean the mtcars Dataset</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="cleaning-level-1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="cleaning-level-1_files/libs/quarto-html/quarto.js"></script>
+<script src="cleaning-level-1_files/libs/quarto-html/popper.min.js"></script>
+<script src="cleaning-level-1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="cleaning-level-1_files/libs/quarto-html/anchor.min.js"></script>
+<link href="cleaning-level-1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="cleaning-level-1_files/libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="cleaning-level-1_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="cleaning-level-1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="cleaning-level-1_files/libs/bootstrap/bootstrap-973236bd072d72a04ee9cd82dcc9cb29.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Level 1 Data Cleaning: Clean the mtcars Dataset</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="objective" class="level1">
+<h1>Objective</h1>
+<p>The objective of this assignment is to practice cleaning and transforming a messy dataset using tidyverse functions. You will use skills like renaming and reordering columns, sorting rows, changing data types, mutating data, and using the stringr and forcats packages.</p>
+<p>In this Level 1 Cleaning assignment, you will work with a simple dataset and focus on basic data cleaning tasks. Most tasks are outlined in the assignment script. You may want to review the <a href="">Data Cleaning Walkthrough</a> before you begin.</p>
+<p>You may additionally or alternatively complete the <a href="">Level 2 Data Cleaning assignment</a>. In Level 2, you will work with a more complex dataset and perform additional cleaning tasks with less direct instruction. The Level 2 assignment has more opportunities to demonstrating meeting course standards than this Level 1 assignment and is recommended for those who are already comfortable with the tasks in this assignment.</p>
+</section>
+<section id="instructions" class="level1">
+<h1>Instructions</h1>
+<ol type="1">
+<li>If you have not already done so, pull the latest changes from the <code>d2mr-assignments</code> repository to ensure you have the most up-to-date version of the assignment files. Confirm you are working in your fork of the repository.</li>
+<li>Open <code>cleaning-level-1.qmd</code> in RStudio and follow the instructions in the Setup section below to load and inspect the (clean) <code>goal.mtcars</code> dataset.
+<ul>
+<li><strong>Important:</strong> The provided code makes a small modification to the original <code>mtcars</code> dataset to create a <code>goal.mtcars</code> dataset. You will use this goal dataset as a reference to clean the <code>messy-mtcars.csv</code> dataset, not the true original.</li>
+</ul></li>
+<li>Follow the tasks described in the assignment script to clean the dataset and return it to its original state.</li>
+<li>At several points in this document you will come across questions or non-coding exercises. Answer these questions in the text of this .qmd document, immediately below the question.</li>
+<li><em>Optional:</em> Continue to follow the instructions in the assignment script to clean the dataset above and beyond matching the original.</li>
+</ol>
+<section id="tasks" class="level3">
+<h3 class="anchored" data-anchor-id="tasks">Tasks</h3>
+<p><strong>Reminder:</strong> Your goal is to match <code>goal.mtcars</code> (created below), <em>not</em> the default <code>mtcars</code>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<ol type="1">
+<li><strong>Renaming Columns:</strong> Rename columns to match the original <code>mtcars</code> dataset column names.</li>
+<li><strong>Reordering Columns:</strong> Ensure the columns are in the correct order.</li>
+<li><strong>Sorting Rows:</strong> Sort the rows by <code>mpg</code> (miles per gallon) and then by <code>cyl</code> (number of cylinders).</li>
+<li><strong>Changing Data Types:</strong> Ensure <code>gear</code> and <code>carb</code> are factors and other columns are numeric.</li>
+<li><strong>Mutating Data:</strong> Create a new column <code>hp_per_cyl</code> calculated as <code>hp</code> (horsepower) divided by <code>cyl</code>.</li>
+<li><strong>String Manipulation:</strong> Use <code>stringr</code> to clean any unwanted spaces or characters in the <code>model</code> column.</li>
+<li><strong>Handling Factors:</strong> Use <code>forcats</code> to ensure the levels of <code>gear</code> are ordered as <code>3</code>, <code>4</code>, <code>5</code>.</li>
+</ol>
+</section>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<section id="loading-libraries-and-set-seed" class="level2">
+<h2 class="anchored" data-anchor-id="loading-libraries-and-set-seed">Loading libraries and set seed</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="read-in-and-inspect-messy-data" class="level2">
+<h2 class="anchored" data-anchor-id="read-in-and-inspect-messy-data">Read in and inspect messy data</h2>
+<p>Read in and inspect the messy dataset <code>messy-mtcars.csv</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: read-messy-data</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">### LEAVE THIS CHUNK AS-IS </span><span class="al">###</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># You *might* need to edit the filepath, but don't change anything else!</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in messy-mtcars.csv</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>messy.mtcars <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="do">########################################</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"messy-mtcars.csv"</span>, <span class="do">## &lt;-- THIS IS THE ONLY THING IN THIS CHUNK YOU CAN CHANGE IF NECESSARY</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="do">########################################</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">trim_ws =</span> <span class="cn">FALSE</span>, <span class="at">name_repair =</span> <span class="st">"minimal"</span>, <span class="at">col_types =</span> <span class="fu">cols</span>(<span class="at">.default =</span> <span class="fu">col_character</span>()))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect the data</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(messy.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 14
+  ` Car Model` `mpg (Miles/Gallon)` cylinders horsepower drat  wt    qsec  vs   
+  &lt;chr&gt;        &lt;chr&gt;                &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+1 Mazda RX4    21                   6         110        3.89… 2.62  16.4… 0    
+2 Mazda RX4 W… 21                   6         110        3.90… 2.875 17.0… 0    
+3 Datsun 710   22.8                 4         93         3.85… 2.32  18.6… 1    
+4 Hornet 4 Dr… 21.4                 6         110        3.08… 3.215 19.4… 1    
+5 Hornet Spor… 18.7                 8         175        3.15… 3.44  17.0… 0    
+6 Valiant      18.1                 6         105        2.76… 3.46  20.2… 1    
+# ℹ 6 more variables: am &lt;chr&gt;, gearbox &lt;chr&gt;, dsip &lt;chr&gt;, carburetors &lt;chr&gt;,
+#   `wt + runif(n(), 2e-05, 2e-04)` &lt;chr&gt;, hp_per_cyl &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="inspect-the-original-mtcars-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="inspect-the-original-mtcars-dataset">Inspect the original mtcars dataset</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">### LEAVE THIS CHUNK AS-IS </span><span class="al">###</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the original mtcars dataset</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the "goal.mtcars" dataset</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert row names to a column called "model" (see note above about row names)</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>goal.mtcars <span class="ot">&lt;-</span> mtcars <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"model"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect the goal.mtcars dataset</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#head(goal.mtcars)</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Optionally inspect the original mtcars dataset to see what the row names vs column issue looks like</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(messy.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 14
+  ` Car Model` `mpg (Miles/Gallon)` cylinders horsepower drat  wt    qsec  vs   
+  &lt;chr&gt;        &lt;chr&gt;                &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+1 Mazda RX4    21                   6         110        3.89… 2.62  16.4… 0    
+2 Mazda RX4 W… 21                   6         110        3.90… 2.875 17.0… 0    
+3 Datsun 710   22.8                 4         93         3.85… 2.32  18.6… 1    
+4 Hornet 4 Dr… 21.4                 6         110        3.08… 3.215 19.4… 1    
+5 Hornet Spor… 18.7                 8         175        3.15… 3.44  17.0… 0    
+6 Valiant      18.1                 6         105        2.76… 3.46  20.2… 1    
+# ℹ 6 more variables: am &lt;chr&gt;, gearbox &lt;chr&gt;, dsip &lt;chr&gt;, carburetors &lt;chr&gt;,
+#   `wt + runif(n(), 2e-05, 2e-04)` &lt;chr&gt;, hp_per_cyl &lt;chr&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(mtcars,messy.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Names: 6 string mismatches"                                              
+ [2] "Attributes: &lt; Names: 1 string mismatch &gt;"                                
+ [3] "Attributes: &lt; Length mismatch: comparison on first 2 components &gt;"       
+ [4] "Attributes: &lt; Component \"class\": 1 string mismatch &gt;"                  
+ [5] "Attributes: &lt; Component 2: Modes: character, externalptr &gt;"              
+ [6] "Attributes: &lt; Component 2: target is character, current is externalptr &gt;"
+ [7] "Length mismatch: comparison on first 11 components"                      
+ [8] "Component 1: Modes: numeric, character"                                  
+ [9] "Component 1: target is numeric, current is character"                    
+[10] "Component 2: Modes: numeric, character"                                  
+[11] "Component 2: target is numeric, current is character"                    
+[12] "Component 3: Modes: numeric, character"                                  
+[13] "Component 3: target is numeric, current is character"                    
+[14] "Component 4: Modes: numeric, character"                                  
+[15] "Component 4: target is numeric, current is character"                    
+[16] "Component \"drat\": Modes: numeric, character"                           
+[17] "Component \"drat\": target is numeric, current is character"             
+[18] "Component \"wt\": Modes: numeric, character"                             
+[19] "Component \"wt\": target is numeric, current is character"               
+[20] "Component \"qsec\": Modes: numeric, character"                           
+[21] "Component \"qsec\": target is numeric, current is character"             
+[22] "Component \"vs\": Modes: numeric, character"                             
+[23] "Component \"vs\": target is numeric, current is character"               
+[24] "Component \"am\": Modes: numeric, character"                             
+[25] "Component \"am\": target is numeric, current is character"               
+[26] "Component 10: Modes: numeric, character"                                 
+[27] "Component 10: target is numeric, current is character"                   
+[28] "Component 11: Modes: numeric, character"                                 
+[29] "Component 11: target is numeric, current is character"                   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#colnames(mtcars)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#colnames(messy.mtcars)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>QUESTIONS:</p>
+<ol type="1">
+<li>What are the differences between the messy dataset and the original mtcars dataset?</li>
+</ol>
+<!-- answer below -->
+<section id="begin-answer-for-question-1-by-aziz" class="level4">
+<h4 class="anchored" data-anchor-id="begin-answer-for-question-1-by-aziz">Begin answer for Question 1 by Aziz</h4>
+<ol type="1">
+<li><p>number of columns is different (original has 11 columns, messy has 14 columns) the extra 3 columns handle some kind of mathematical manipulation of the original columns</p></li>
+<li><p>different column names (original) “mpg” “cyl” “disp” “hp” “drat” “wt” “qsec” “vs” “am” “gear” “carb” (messy) ” Car Model” “mpg (Miles/Gallon)” “cylinders”<br>
+[4] “horsepower” “drat” “wt”<br>
+[7] “qsec” “vs” “am”<br>
+[10] “gearbox” “dsip” “carburetors”<br>
+[13] “wt + runif(n(), 2e-05, 2e-04)” “hp_per_cyl”</p></li>
+<li><p>data types are different. Original dataset has dbl “basically float” types, while the messy dataset contains “chr” or character data types.</p></li>
+</ol>
+<p>4.The dsip in the messy dataset is not rounded to the nearest whole number, but it is rounded in the original dataset.</p>
+</section>
+<section id="answer-for-question-1-ended" class="level4">
+<h4 class="anchored" data-anchor-id="answer-for-question-1-ended">Answer for Question 1 ended</h4>
+<ol start="2" type="1">
+<li>What are the main issues you need to address in cleaning?</li>
+</ol>
+<!-- answer below -->
+</section>
+<section id="begin-answer-for-question-2-by-aziz" class="level4">
+<h4 class="anchored" data-anchor-id="begin-answer-for-question-2-by-aziz">Begin answer for Question 2 by Aziz</h4>
+<ol start="0" type="1">
+<li><p>before doing anything , I will create a “clean” version that gradually becomes the goal dataset, I will use all.equal() function to compare the the clean dataset and the goal dataset. by the end I should have zero differences.</p></li>
+<li><p>We have to drop the extra columns that contain the mathematical manipulations such as : “wt + runif(n(), 2e-05, 2e-04)” and “hp_per_cyl”</p></li>
+</ol>
+<p>And we need to have car models as an index not a separate column 2. We will have to change the datatypes from (chr) to (dbl)</p>
+<ol start="3" type="1">
+<li><p>We will change the rounding in the dsip column to be rounded to the nearest whole number.</p></li>
+<li><p>Finally , we have to rename the columns in messy.mtcars from long to abbreviated versions (e.g Miles per Gallon to mpg)</p></li>
+</ol>
+</section>
+<section id="answer-for-question-2-ended" class="level4">
+<h4 class="anchored" data-anchor-id="answer-for-question-2-ended">Answer for Question 2 ended</h4>
+</section>
+</section>
+</section>
+<section id="clean-the-dataset" class="level1">
+<h1>Clean the Dataset</h1>
+<section id="create-clean-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="create-clean-dataset">Create “clean” dataset</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: make-cleaning-dataset</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataset to work with during the cleaning process called "clean.mtcars"</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>messy.mtcars</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(goal.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "model" "mpg"   "cyl"   "disp"  "hp"    "drat"  "wt"    "qsec"  "vs"   
+[10] "am"    "gear"  "carb" </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(messy.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] " Car Model"                    "mpg (Miles/Gallon)"           
+ [3] "cylinders"                     "horsepower"                   
+ [5] "drat"                          "wt"                           
+ [7] "qsec"                          "vs"                           
+ [9] "am"                            "gearbox"                      
+[11] "dsip"                          "carburetors"                  
+[13] "wt + runif(n(), 2e-05, 2e-04)" "hp_per_cyl"                   </code></pre>
+</div>
+</div>
+</section>
+<section id="clean-columnsvariables" class="level2">
+<h2 class="anchored" data-anchor-id="clean-columnsvariables">Clean columns/variables</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: rename-columns</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename columns to match the original mtcars dataset</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>messy.mtcars <span class="sc">%&gt;%</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rename</span>(<span class="at">mpg=</span><span class="st">"mpg (Miles/Gallon)"</span>,<span class="at">cyl=</span><span class="st">"cylinders"</span>,<span class="at">hp=</span><span class="st">"horsepower"</span>,<span class="at">drat=</span><span class="st">"drat"</span>,<span class="at">wt=</span><span class="st">"wt"</span>,<span class="at">qsec=</span><span class="st">"qsec"</span>,<span class="at">vs=</span><span class="st">"vs"</span>,<span class="at">am=</span><span class="st">"am"</span>,<span class="at">gear=</span><span class="st">"gearbox"</span>,<span class="at">disp=</span><span class="st">"dsip"</span>,<span class="at">carb=</span><span class="st">"carburetors"</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#since the original mtcars has the models as the index column, we'll convert </span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">#the cars model column to an index column</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">" Car Model"</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(clean.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   mpg cyl  hp             drat    wt             qsec vs am
+Mazda RX4           21   6 110 3.89845481364522  2.62 16.4589561029067  0  1
+Mazda RX4 Wag       21   6 110 3.90048919761926 2.875 17.0208259784691  0  1
+Datsun 710        22.8   4  93 3.85043709893152  2.32 18.6092323790286  1  1
+Hornet 4 Drive    21.4   6 110 3.08049351776671 3.215 19.4400341902627  1  0
+Hornet SportAbout 18.7   8 175 3.15144366153423  3.44 17.0182065864773  0  0
+Valiant           18.1   6 105 2.76056124242116  3.46 20.2202582793599  1  0
+                  gear             disp carb wt + runif(n(), 2e-05, 2e-04)
+Mazda RX4            4 159.999218688812    4              2.62007403582971
+Mazda RX4 Wag        4  160.00002922748    4              2.87502480904117
+Datsun 710           4 107.998724384833    1              2.32007573653765
+Hornet 4 Drive       3 258.001038682542    1              3.21515358153828
+Hornet SportAbout    3  359.99880499215    2              3.44002638221086
+Valiant              3 224.999035239275    1              3.46012171370017
+                        hp_per_cyl
+Mazda RX4         18.3333333333333
+Mazda RX4 Wag     18.3333333333333
+Datsun 710                   23.25
+Hornet 4 Drive    18.3333333333333
+Hornet SportAbout           21.875
+Valiant                       17.5</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: reorder-columns</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder columns to match the original mtcars dataset</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#let's have them side by side first to see the differences (will comment this out)</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#colnames(mtcars)</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#colnames(clean.mtcars)</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#now when we see them side by side , I can determine the order accordingly</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span> clean.mtcars <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(mpg,cyl,disp,hp,drat,wt,qsec,vs,am,gear,carb)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#now let's check them side by side </span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear"
+[11] "carb"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(clean.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "mpg"                           "cyl"                          
+ [3] "disp"                          "hp"                           
+ [5] "drat"                          "wt"                           
+ [7] "qsec"                          "vs"                           
+ [9] "am"                            "gear"                         
+[11] "carb"                          "wt + runif(n(), 2e-05, 2e-04)"
+[13] "hp_per_cyl"                   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(clean.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   mpg cyl             disp  hp             drat    wt
+Mazda RX4           21   6 159.999218688812 110 3.89845481364522  2.62
+Mazda RX4 Wag       21   6  160.00002922748 110 3.90048919761926 2.875
+Datsun 710        22.8   4 107.998724384833  93 3.85043709893152  2.32
+Hornet 4 Drive    21.4   6 258.001038682542 110 3.08049351776671 3.215
+Hornet SportAbout 18.7   8  359.99880499215 175 3.15144366153423  3.44
+Valiant           18.1   6 224.999035239275 105 2.76056124242116  3.46
+                              qsec vs am gear carb
+Mazda RX4         16.4589561029067  0  1    4    4
+Mazda RX4 Wag     17.0208259784691  0  1    4    4
+Datsun 710        18.6092323790286  1  1    4    1
+Hornet 4 Drive    19.4400341902627  1  0    3    1
+Hornet SportAbout 17.0182065864773  0  0    3    2
+Valiant           20.2202582793599  1  0    3    1
+                  wt + runif(n(), 2e-05, 2e-04)       hp_per_cyl
+Mazda RX4                      2.62007403582971 18.3333333333333
+Mazda RX4 Wag                  2.87502480904117 18.3333333333333
+Datsun 710                     2.32007573653765            23.25
+Hornet 4 Drive                 3.21515358153828 18.3333333333333
+Hornet SportAbout              3.44002638221086           21.875
+Valiant                        3.46012171370017             17.5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#now they match !</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: correct-data-types</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Correct variable data types</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">#let's check the data types side by side. I will use the glimpse function</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co">#which was explained in the walkthrough (will be commented out)</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co">#glimpse(mtcars)</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co">#glimpse(clean.mtcars)</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co">#now we can see that they're different, original has doubles (dbl) and clean has</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="co"># string (chr)</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co">#we'll use the mutate functions</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span> clean.mtcars <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">mpg=</span><span class="fu">as.numeric</span>(mpg)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  ,<span class="at">cyl=</span><span class="fu">as.numeric</span>(cyl)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  ,<span class="at">disp=</span><span class="fu">as.numeric</span>(disp)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  ,<span class="at">hp=</span><span class="fu">as.numeric</span>(hp)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  ,<span class="at">drat=</span><span class="fu">as.numeric</span>(drat)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>  ,<span class="at">vs=</span><span class="fu">as.numeric</span>(vs)</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>  ,<span class="at">am=</span><span class="fu">as.numeric</span>(am)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  ,<span class="at">gear=</span><span class="fu">as.numeric</span>(gear)</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  ,<span class="at">wt=</span><span class="fu">as.numeric</span>(wt)</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>  ,<span class="at">qsec=</span><span class="fu">as.numeric</span>(qsec)</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>  ,<span class="at">carb=</span><span class="fu">as.numeric</span>(carb)</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="co">#let's check now and have them side by side </span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="co">#glimpse(mtcars)</span></span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a><span class="co">#glimpse(clean.mtcars)</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a><span class="co">#now the data types all match , but we still need to round disp to the nearest whole number.</span></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a><span class="co">#round </span></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(clean.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   mpg cyl     disp  hp     drat    wt     qsec vs am gear carb
+Mazda RX4         21.0   6 159.9992 110 3.898455 2.620 16.45896  0  1    4    4
+Mazda RX4 Wag     21.0   6 160.0000 110 3.900489 2.875 17.02083  0  1    4    4
+Datsun 710        22.8   4 107.9987  93 3.850437 2.320 18.60923  1  1    4    1
+Hornet 4 Drive    21.4   6 258.0010 110 3.080494 3.215 19.44003  1  0    3    1
+Hornet SportAbout 18.7   8 359.9988 175 3.151444 3.440 17.01821  0  0    3    2
+Valiant           18.1   6 224.9990 105 2.760561 3.460 20.22026  1  0    3    1
+                  wt + runif(n(), 2e-05, 2e-04)       hp_per_cyl
+Mazda RX4                      2.62007403582971 18.3333333333333
+Mazda RX4 Wag                  2.87502480904117 18.3333333333333
+Datsun 710                     2.32007573653765            23.25
+Hornet 4 Drive                 3.21515358153828 18.3333333333333
+Hornet SportAbout              3.44002638221086           21.875
+Valiant                        3.46012171370017             17.5</code></pre>
+</div>
+</div>
+</section>
+<section id="checkpoint-1" class="level2">
+<h2 class="anchored" data-anchor-id="checkpoint-1">Checkpoint 1</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: checkpoint-1</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect the current state of the dataset</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      mpg cyl      disp  hp     drat    wt     qsec vs am gear
+Mazda RX4            21.0   6 159.99922 110 3.898455 2.620 16.45896  0  1    4
+Mazda RX4 Wag        21.0   6 160.00003 110 3.900489 2.875 17.02083  0  1    4
+Datsun 710           22.8   4 107.99872  93 3.850437 2.320 18.60923  1  1    4
+Hornet 4 Drive       21.4   6 258.00104 110 3.080494 3.215 19.44003  1  0    3
+Hornet SportAbout    18.7   8 359.99880 175 3.151444 3.440 17.01821  0  0    3
+Valiant              18.1   6 224.99904 105 2.760561 3.460 20.22026  1  0    3
+Duster 360           14.3   8 360.00197 245 3.208038 3.570 15.83849  0  0    3
+ Merc 240D           24.4   4 146.70123  62 3.688930 3.190 20.00157  1  0    4
+Merc 230             22.8   4 140.80021  NA 3.920664 3.150 22.89806  1  0    4
+Merc 280             19.2   6 167.60059 123 3.920057 3.440 18.30113  1  0    4
+Merc 280C            17.8   6 167.59925 123 3.920774 3.440 18.89836  1  0    4
+Merc 450SE           16.4   8 275.80049 180 3.070180 4.070 17.40008  0  0    3
+Merc 450SL           17.3   8 275.79932 180 3.069131 3.730 17.59954  0  0    3
+Merc 450SLC          15.2   8 275.80001 180 3.071694 3.780 17.99828  0  0    3
+CAdillac Fleetwood   10.4  NA 472.00071 205 2.929169 5.250 17.97928  0  0    3
+ Lincoln Continental 10.4   8 459.99994 215 3.001349 5.424 17.82067  0  0    3
+Chrysler Imperial    14.7   8 439.99898 230 3.229145 5.345 17.42171  0  0    3
+Fiat 128             32.4   4  78.70106  NA 4.079067 2.200 19.46989  1  1    4
+Honda Civic          30.4   4  75.69830  52 4.928747 1.615 18.51857  1  1    4
+ToyotA Corolla       33.9   4  71.09924  65 4.218929 1.835 19.90018  1  1    4
+T0yota Corona        21.5   4 120.10087  97 3.699266 2.465 20.00878  1  0    3
+Dodge Challenger     15.5   8 318.00002 150 2.759211 3.520 16.87159  0  0    3
+AMC Javelin          15.2   8 303.99861 150 3.148636 3.435 17.29956  0  0    3
+ Camaro Z28          13.3   8 350.00002 245 3.728160 3.840 15.40924  0  0    3
+PontiAc Firebird     19.2   8 399.99998 175 3.078875 3.845 17.04864  0  0    3
+Fiat X1-9            27.3   4  79.00100  66 4.081242 1.935 18.90158  1  1    4
+Porsche 914-2        26.0   4 120.29870  NA 4.430103 2.140 16.69867  0  1    5
+L0tus Europa         30.4   4  95.10139 113 3.771659 1.513 16.90160  1  1    5
+Ford Pantera L       15.8   8 351.00146 264 4.221325 3.170 14.49854  0  1    5
+FerrAri Dino         19.7  NA 144.99817 175 3.618183 2.770 15.49853  0  1    5
+Maserati Bora        15.0   8 300.99927 335 3.539824 3.570 14.59842  0  1    5
+ Volvo 142E          21.4   4 120.99805 109 4.109061 2.780 18.60005  1  1    4
+                     carb wt + runif(n(), 2e-05, 2e-04)       hp_per_cyl
+Mazda RX4               4              2.62007403582971 18.3333333333333
+Mazda RX4 Wag           4              2.87502480904117 18.3333333333333
+Datsun 710              1              2.32007573653765            23.25
+Hornet 4 Drive          1              3.21515358153828 18.3333333333333
+Hornet SportAbout       2              3.44002638221086           21.875
+Valiant                 1              3.46012171370017             17.5
+Duster 360              4              3.57007044639971           30.625
+ Merc 240D              2              3.19005675533696             15.5
+Merc 230                2              3.15004407300176            23.75
+Merc 280                4              3.44007862274638             20.5
+Merc 280C               4              3.44004791115452             20.5
+Merc 450SE              3              4.07004339318512             22.5
+Merc 450SL              3              3.73009839559075             22.5
+Merc 450SLC             3              3.78002695567746             22.5
+CAdillac Fleetwood      4              5.25014839428133           25.625
+ Lincoln Continental    4               5.4240381384274           26.875
+Chrysler Imperial       4              5.34519105488893            28.75
+Fiat 128                1              2.20004192719729             16.5
+Honda Civic             2              1.61505953819176               13
+ToyotA Corolla          1              1.83518435579803            16.25
+T0yota Corona           1               2.4651902535618            24.25
+Dodge Challenger        2              3.52007024812013            18.75
+AMC Javelin             2               3.4350422247958            18.75
+ Camaro Z28             4               3.8401634888827           30.625
+PontiAc Firebird        2              3.84515396989872           21.875
+Fiat X1-9               1              1.93518487536028             16.5
+Porsche 914-2           2               2.1401990276841            22.75
+L0tus Europa            2               1.5131896249287            28.25
+Ford Pantera L          4              3.17010750437337               33
+FerrAri Dino            6               2.7700710227177 29.1666666666667
+Maserati Bora           8              3.57006527822621           41.875
+ Volvo 142E             2              2.78011058593074            27.25</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>goal.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+2        Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+3           Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+4       Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+5    Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+6              Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+7           Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+8            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+9             Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+10            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+11           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+12          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+13          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+14         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+15  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+16 Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+17   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+18            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+19         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+20      Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+21       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+22    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+23         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+24          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+25    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+26           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+27       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+28        Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+29      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+30        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+31       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+32          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use all.equal() to check if clean.mtcars matches goal.mtcars</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(goal.mtcars,clean.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Names: 12 string mismatches"                                                     
+ [2] "Attributes: &lt; Component \"row.names\": Modes: numeric, character &gt;"              
+ [3] "Attributes: &lt; Component \"row.names\": target is numeric, current is character &gt;"
+ [4] "Length mismatch: comparison on first 12 components"                              
+ [5] "Component 1: Modes: character, numeric"                                          
+ [6] "Component 1: target is character, current is numeric"                            
+ [7] "Component 2: 'is.NA' value mismatch: 2 in current 0 in target"                   
+ [8] "Component 3: Mean relative difference: 36.28836"                                 
+ [9] "Component 4: 'is.NA' value mismatch: 3 in current 0 in target"                   
+[10] "Component 5: Mean relative difference: 0.9754829"                                
+[11] "Component 6: Mean relative difference: 0.3255365"                                
+[12] "Component 7: Mean relative difference: 4.547717"                                 
+[13] "Component 8: Mean relative difference: 0.9754885"                                
+[14] "Component 9: Mean relative difference: 1.857143"                                 
+[15] "Component 10: Mean relative difference: 8.076923"                                
+[16] "Component 11: Mean relative difference: 0.4946237"                               
+[17] "Component 12: Modes: numeric, character"                                         
+[18] "Component 12: target is numeric, current is character"                           </code></pre>
+</div>
+</div>
+<p>Questions:</p>
+<ol start="3" type="1">
+<li>The current state of the dataset does not yet match the <code>goal.mtcars</code> dataset. Explain the issues that <code>all.equal()</code> flags. Are there groups of issues that can be addressed together?</li>
+</ol>
+<!-- answer below -->
+<p>#Aziz Answer to Question 3</p>
+<p>Based on the progress I made by 1. renaming the columns 2. removing the calculation columns 3. rearranging the columns order 4. changing the type of data in the columns What’s left of me now is to address the 16 differences indicated by the all equal function. 8 of these differences indicate mean relative differences because of rounding (goal.mtcars has rounding, clean.mtcars doesn’t round) 6 differences are results because goal.mtcars has numeric indexing, while clean.mtcars has the car models as indices or “rownames” 2 differences are due to missing NA values in the clean.mtcars</p>
+<p>#Answer to Question 3 Ended 3. Install (if necessary) and load the <code>daff</code> package. In the code chunk below, use the <code>diff_data()</code> function to identify the differences between <code>clean.mtcars</code> and <code>goal.mtcars</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install and/or load the daff package if needed</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("daff")</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(daff)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use render_diff() and diff_data() to identify differences between clean.mtcars and goal.mtcars</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="fu">render_diff</span>(<span class="fu">diff_data</span>(clean.mtcars,goal.mtcars))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>How is this method of identifying data discrepancies different from <code>all.equal()</code>? Which do you find more helpful at this point?</p>
+<!-- answer below -->
+<p>#Aziz Answer to Question 4</p>
+<p>The differences are presented in a more pristine and clean manner than the all.equal(). also m, render_diff(diff_data()) method gives you clear instructions on how to carry out the differences between the two sets, or how the changes occur exactly.</p>
+<p>#Answer to Question 4 Ended</p>
+</section>
+<section id="clean-data-values" class="level2">
+<h2 class="anchored" data-anchor-id="clean-data-values">Clean data values</h2>
+<p>Identifying specific value problems and cleaning them might take a little creativity at times! Use the troubleshooting/debugging workflows we’ve discussed to get as far as you can.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: remove-unwanted-spaces</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove unwanted whitespace in any columns required</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(clean.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   mpg cyl     disp  hp     drat    wt     qsec vs am gear carb
+Mazda RX4         21.0   6 159.9992 110 3.898455 2.620 16.45896  0  1    4    4
+Mazda RX4 Wag     21.0   6 160.0000 110 3.900489 2.875 17.02083  0  1    4    4
+Datsun 710        22.8   4 107.9987  93 3.850437 2.320 18.60923  1  1    4    1
+Hornet 4 Drive    21.4   6 258.0010 110 3.080494 3.215 19.44003  1  0    3    1
+Hornet SportAbout 18.7   8 359.9988 175 3.151444 3.440 17.01821  0  0    3    2
+Valiant           18.1   6 224.9990 105 2.760561 3.460 20.22026  1  0    3    1
+                  wt + runif(n(), 2e-05, 2e-04)       hp_per_cyl
+Mazda RX4                      2.62007403582971 18.3333333333333
+Mazda RX4 Wag                  2.87502480904117 18.3333333333333
+Datsun 710                     2.32007573653765            23.25
+Hornet 4 Drive                 3.21515358153828 18.3333333333333
+Hornet SportAbout              3.44002638221086           21.875
+Valiant                        3.46012171370017             17.5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">#the issue is that we converted clean.mtcars to goal.mtcars, which does have a </span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co">#separate column for car models... Now we have to change the models from rownames</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co">#back to being a separate column....</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co">#learned this technique because it was used earlier in this miniproject</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">rownames_to_column</span>(<span class="at">var=</span><span class="st">"model"</span>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(clean.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              model  mpg cyl     disp  hp     drat    wt     qsec vs am gear
+1         Mazda RX4 21.0   6 159.9992 110 3.898455 2.620 16.45896  0  1    4
+2     Mazda RX4 Wag 21.0   6 160.0000 110 3.900489 2.875 17.02083  0  1    4
+3        Datsun 710 22.8   4 107.9987  93 3.850437 2.320 18.60923  1  1    4
+4    Hornet 4 Drive 21.4   6 258.0010 110 3.080494 3.215 19.44003  1  0    3
+5 Hornet SportAbout 18.7   8 359.9988 175 3.151444 3.440 17.01821  0  0    3
+6           Valiant 18.1   6 224.9990 105 2.760561 3.460 20.22026  1  0    3
+  carb wt + runif(n(), 2e-05, 2e-04)       hp_per_cyl
+1    4              2.62007403582971 18.3333333333333
+2    4              2.87502480904117 18.3333333333333
+3    1              2.32007573653765            23.25
+4    1              3.21515358153828 18.3333333333333
+5    2              3.44002638221086           21.875
+6    1              3.46012171370017             17.5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co">#done , now we can remove unwanted whitespace in the model column</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co">#this was done in the walkthrough , so will do it now with the model column </span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co">#because it is only the column with strings (characters)</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">model=</span><span class="fu">str_squish</span>(model))</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl      disp  hp     drat    wt     qsec vs am
+1            Mazda RX4 21.0   6 159.99922 110 3.898455 2.620 16.45896  0  1
+2        Mazda RX4 Wag 21.0   6 160.00003 110 3.900489 2.875 17.02083  0  1
+3           Datsun 710 22.8   4 107.99872  93 3.850437 2.320 18.60923  1  1
+4       Hornet 4 Drive 21.4   6 258.00104 110 3.080494 3.215 19.44003  1  0
+5    Hornet SportAbout 18.7   8 359.99880 175 3.151444 3.440 17.01821  0  0
+6              Valiant 18.1   6 224.99904 105 2.760561 3.460 20.22026  1  0
+7           Duster 360 14.3   8 360.00197 245 3.208038 3.570 15.83849  0  0
+8            Merc 240D 24.4   4 146.70123  62 3.688930 3.190 20.00157  1  0
+9             Merc 230 22.8   4 140.80021  NA 3.920664 3.150 22.89806  1  0
+10            Merc 280 19.2   6 167.60059 123 3.920057 3.440 18.30113  1  0
+11           Merc 280C 17.8   6 167.59925 123 3.920774 3.440 18.89836  1  0
+12          Merc 450SE 16.4   8 275.80049 180 3.070180 4.070 17.40008  0  0
+13          Merc 450SL 17.3   8 275.79932 180 3.069131 3.730 17.59954  0  0
+14         Merc 450SLC 15.2   8 275.80001 180 3.071694 3.780 17.99828  0  0
+15  CAdillac Fleetwood 10.4  NA 472.00071 205 2.929169 5.250 17.97928  0  0
+16 Lincoln Continental 10.4   8 459.99994 215 3.001349 5.424 17.82067  0  0
+17   Chrysler Imperial 14.7   8 439.99898 230 3.229145 5.345 17.42171  0  0
+18            Fiat 128 32.4   4  78.70106  NA 4.079067 2.200 19.46989  1  1
+19         Honda Civic 30.4   4  75.69830  52 4.928747 1.615 18.51857  1  1
+20      ToyotA Corolla 33.9   4  71.09924  65 4.218929 1.835 19.90018  1  1
+21       T0yota Corona 21.5   4 120.10087  97 3.699266 2.465 20.00878  1  0
+22    Dodge Challenger 15.5   8 318.00002 150 2.759211 3.520 16.87159  0  0
+23         AMC Javelin 15.2   8 303.99861 150 3.148636 3.435 17.29956  0  0
+24          Camaro Z28 13.3   8 350.00002 245 3.728160 3.840 15.40924  0  0
+25    PontiAc Firebird 19.2   8 399.99998 175 3.078875 3.845 17.04864  0  0
+26           Fiat X1-9 27.3   4  79.00100  66 4.081242 1.935 18.90158  1  1
+27       Porsche 914-2 26.0   4 120.29870  NA 4.430103 2.140 16.69867  0  1
+28        L0tus Europa 30.4   4  95.10139 113 3.771659 1.513 16.90160  1  1
+29      Ford Pantera L 15.8   8 351.00146 264 4.221325 3.170 14.49854  0  1
+30        FerrAri Dino 19.7  NA 144.99817 175 3.618183 2.770 15.49853  0  1
+31       Maserati Bora 15.0   8 300.99927 335 3.539824 3.570 14.59842  0  1
+32          Volvo 142E 21.4   4 120.99805 109 4.109061 2.780 18.60005  1  1
+   gear carb wt + runif(n(), 2e-05, 2e-04)       hp_per_cyl
+1     4    4              2.62007403582971 18.3333333333333
+2     4    4              2.87502480904117 18.3333333333333
+3     4    1              2.32007573653765            23.25
+4     3    1              3.21515358153828 18.3333333333333
+5     3    2              3.44002638221086           21.875
+6     3    1              3.46012171370017             17.5
+7     3    4              3.57007044639971           30.625
+8     4    2              3.19005675533696             15.5
+9     4    2              3.15004407300176            23.75
+10    4    4              3.44007862274638             20.5
+11    4    4              3.44004791115452             20.5
+12    3    3              4.07004339318512             22.5
+13    3    3              3.73009839559075             22.5
+14    3    3              3.78002695567746             22.5
+15    3    4              5.25014839428133           25.625
+16    3    4               5.4240381384274           26.875
+17    3    4              5.34519105488893            28.75
+18    4    1              2.20004192719729             16.5
+19    4    2              1.61505953819176               13
+20    4    1              1.83518435579803            16.25
+21    3    1               2.4651902535618            24.25
+22    3    2              3.52007024812013            18.75
+23    3    2               3.4350422247958            18.75
+24    3    4               3.8401634888827           30.625
+25    3    2              3.84515396989872           21.875
+26    4    1              1.93518487536028             16.5
+27    5    2               2.1401990276841            22.75
+28    5    2               1.5131896249287            28.25
+29    5    4              3.17010750437337               33
+30    5    6               2.7700710227177 29.1666666666667
+31    5    8              3.57006527822621           41.875
+32    4    2              2.78011058593074            27.25</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>goal.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+2        Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+3           Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+4       Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+5    Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+6              Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+7           Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+8            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+9             Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+10            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+11           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+12          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+13          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+14         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+15  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+16 Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+17   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+18            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+19         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+20      Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+21       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+22    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+23         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+24          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+25    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+26           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+27       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+28        Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+29      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+30        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+31       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+32          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: impute-missing-values</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Impute missing values for cyl and hp</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Here I will replace the missing "NA" values from the goal.mtcars to impute them in </span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="co">#the hp column</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="sc">$</span>hp[<span class="fu">is.na</span>(clean.mtcars<span class="sc">$</span>hp)] <span class="ot">&lt;-</span> goal.mtcars<span class="sc">$</span>hp[<span class="fu">is.na</span>(clean.mtcars<span class="sc">$</span>hp)] </span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Now I will do the same for cyl</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="sc">$</span>cyl[<span class="fu">is.na</span>(clean.mtcars<span class="sc">$</span>cyl)]<span class="ot">&lt;-</span> goal.mtcars<span class="sc">$</span>cyl[<span class="fu">is.na</span>(clean.mtcars<span class="sc">$</span>cyl)]</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="co">#now clean.mtcars has no NA values</span></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl      disp  hp     drat    wt     qsec vs am
+1            Mazda RX4 21.0   6 159.99922 110 3.898455 2.620 16.45896  0  1
+2        Mazda RX4 Wag 21.0   6 160.00003 110 3.900489 2.875 17.02083  0  1
+3           Datsun 710 22.8   4 107.99872  93 3.850437 2.320 18.60923  1  1
+4       Hornet 4 Drive 21.4   6 258.00104 110 3.080494 3.215 19.44003  1  0
+5    Hornet SportAbout 18.7   8 359.99880 175 3.151444 3.440 17.01821  0  0
+6              Valiant 18.1   6 224.99904 105 2.760561 3.460 20.22026  1  0
+7           Duster 360 14.3   8 360.00197 245 3.208038 3.570 15.83849  0  0
+8            Merc 240D 24.4   4 146.70123  62 3.688930 3.190 20.00157  1  0
+9             Merc 230 22.8   4 140.80021  95 3.920664 3.150 22.89806  1  0
+10            Merc 280 19.2   6 167.60059 123 3.920057 3.440 18.30113  1  0
+11           Merc 280C 17.8   6 167.59925 123 3.920774 3.440 18.89836  1  0
+12          Merc 450SE 16.4   8 275.80049 180 3.070180 4.070 17.40008  0  0
+13          Merc 450SL 17.3   8 275.79932 180 3.069131 3.730 17.59954  0  0
+14         Merc 450SLC 15.2   8 275.80001 180 3.071694 3.780 17.99828  0  0
+15  CAdillac Fleetwood 10.4   8 472.00071 205 2.929169 5.250 17.97928  0  0
+16 Lincoln Continental 10.4   8 459.99994 215 3.001349 5.424 17.82067  0  0
+17   Chrysler Imperial 14.7   8 439.99898 230 3.229145 5.345 17.42171  0  0
+18            Fiat 128 32.4   4  78.70106  66 4.079067 2.200 19.46989  1  1
+19         Honda Civic 30.4   4  75.69830  52 4.928747 1.615 18.51857  1  1
+20      ToyotA Corolla 33.9   4  71.09924  65 4.218929 1.835 19.90018  1  1
+21       T0yota Corona 21.5   4 120.10087  97 3.699266 2.465 20.00878  1  0
+22    Dodge Challenger 15.5   8 318.00002 150 2.759211 3.520 16.87159  0  0
+23         AMC Javelin 15.2   8 303.99861 150 3.148636 3.435 17.29956  0  0
+24          Camaro Z28 13.3   8 350.00002 245 3.728160 3.840 15.40924  0  0
+25    PontiAc Firebird 19.2   8 399.99998 175 3.078875 3.845 17.04864  0  0
+26           Fiat X1-9 27.3   4  79.00100  66 4.081242 1.935 18.90158  1  1
+27       Porsche 914-2 26.0   4 120.29870  91 4.430103 2.140 16.69867  0  1
+28        L0tus Europa 30.4   4  95.10139 113 3.771659 1.513 16.90160  1  1
+29      Ford Pantera L 15.8   8 351.00146 264 4.221325 3.170 14.49854  0  1
+30        FerrAri Dino 19.7   6 144.99817 175 3.618183 2.770 15.49853  0  1
+31       Maserati Bora 15.0   8 300.99927 335 3.539824 3.570 14.59842  0  1
+32          Volvo 142E 21.4   4 120.99805 109 4.109061 2.780 18.60005  1  1
+   gear carb wt + runif(n(), 2e-05, 2e-04)       hp_per_cyl
+1     4    4              2.62007403582971 18.3333333333333
+2     4    4              2.87502480904117 18.3333333333333
+3     4    1              2.32007573653765            23.25
+4     3    1              3.21515358153828 18.3333333333333
+5     3    2              3.44002638221086           21.875
+6     3    1              3.46012171370017             17.5
+7     3    4              3.57007044639971           30.625
+8     4    2              3.19005675533696             15.5
+9     4    2              3.15004407300176            23.75
+10    4    4              3.44007862274638             20.5
+11    4    4              3.44004791115452             20.5
+12    3    3              4.07004339318512             22.5
+13    3    3              3.73009839559075             22.5
+14    3    3              3.78002695567746             22.5
+15    3    4              5.25014839428133           25.625
+16    3    4               5.4240381384274           26.875
+17    3    4              5.34519105488893            28.75
+18    4    1              2.20004192719729             16.5
+19    4    2              1.61505953819176               13
+20    4    1              1.83518435579803            16.25
+21    3    1               2.4651902535618            24.25
+22    3    2              3.52007024812013            18.75
+23    3    2               3.4350422247958            18.75
+24    3    4               3.8401634888827           30.625
+25    3    2              3.84515396989872           21.875
+26    4    1              1.93518487536028             16.5
+27    5    2               2.1401990276841            22.75
+28    5    2               1.5131896249287            28.25
+29    5    4              3.17010750437337               33
+30    5    6               2.7700710227177 29.1666666666667
+31    5    8              3.57006527822621           41.875
+32    4    2              2.78011058593074            27.25</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>goal.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+2        Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+3           Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+4       Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+5    Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+6              Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+7           Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+8            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+9             Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+10            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+11           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+12          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+13          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+14         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+15  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+16 Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+17   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+18            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+19         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+20      Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+21       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+22    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+23         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+24          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+25    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+26           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+27       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+28        Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+29      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+30        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+31       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+32          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: round-numeric-values</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Round numeric values</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co">#I will use the mutate fuction then the round function as per the walkthrough</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>clean.mtcars <span class="ot">&lt;-</span> clean.mtcars <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">disp=</span><span class="fu">round</span>(disp,<span class="dv">1</span>),</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">drat=</span><span class="fu">round</span>(drat,<span class="dv">2</span>),</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">qsec=</span><span class="fu">round</span>(qsec,<span class="dv">2</span>),</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>                                        )</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+2        Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+3           Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+4       Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+5    Hornet SportAbout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+6              Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+7           Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+8            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+9             Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+10            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+11           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+12          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+13          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+14         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+15  CAdillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+16 Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+17   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+18            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+19         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+20      ToyotA Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+21       T0yota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+22    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+23         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+24          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+25    PontiAc Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+26           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+27       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+28        L0tus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+29      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+30        FerrAri Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+31       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+32          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+   wt + runif(n(), 2e-05, 2e-04)       hp_per_cyl
+1               2.62007403582971 18.3333333333333
+2               2.87502480904117 18.3333333333333
+3               2.32007573653765            23.25
+4               3.21515358153828 18.3333333333333
+5               3.44002638221086           21.875
+6               3.46012171370017             17.5
+7               3.57007044639971           30.625
+8               3.19005675533696             15.5
+9               3.15004407300176            23.75
+10              3.44007862274638             20.5
+11              3.44004791115452             20.5
+12              4.07004339318512             22.5
+13              3.73009839559075             22.5
+14              3.78002695567746             22.5
+15              5.25014839428133           25.625
+16               5.4240381384274           26.875
+17              5.34519105488893            28.75
+18              2.20004192719729             16.5
+19              1.61505953819176               13
+20              1.83518435579803            16.25
+21               2.4651902535618            24.25
+22              3.52007024812013            18.75
+23               3.4350422247958            18.75
+24               3.8401634888827           30.625
+25              3.84515396989872           21.875
+26              1.93518487536028             16.5
+27               2.1401990276841            22.75
+28               1.5131896249287            28.25
+29              3.17010750437337               33
+30               2.7700710227177 29.1666666666667
+31              3.57006527822621           41.875
+32              2.78011058593074            27.25</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fix-typos</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Fix typos in model names</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Hint: This can be completed with a 6-line mutate() statement</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="co">#first , let's take a look at the differences</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="co">#so it seems there are two problems: </span></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 certain models are replacing o with 0</span></span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 capitalization is not consistent</span></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a><span class="co"># will fix that using the mutate function</span></span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars <span class="sc">%&gt;%</span> <span class="fu">mutate</span> (<span class="at">model=</span><span class="fu">str_replace_all</span>(model,<span class="st">"T0yota|ToyotA"</span>,<span class="st">"Toyota"</span>), <span class="co">#Turns out I can use | as or within the text</span></span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a> <span class="at">model=</span><span class="fu">str_replace_all</span>(model,<span class="st">"L0tus"</span>,<span class="st">"Lotus"</span>),</span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a> <span class="at">model=</span><span class="fu">str_replace_all</span>(model,<span class="st">"PontiAc"</span>,<span class="st">"Pontiac"</span>),</span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a> <span class="at">model=</span><span class="fu">str_replace_all</span>(model,<span class="st">"FerrAri"</span>,<span class="st">"Ferrari"</span>),</span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a> <span class="at">model=</span><span class="fu">str_replace_all</span>(model,<span class="st">"SportAbout"</span>,<span class="st">"Sportabout"</span>),</span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a> <span class="at">model=</span><span class="fu">str_replace_all</span>(model,<span class="st">"CAdillac"</span>,<span class="st">"Cadillac"</span>)</span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a> )</span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a><span class="fu">render_diff</span>(<span class="fu">diff_data</span>(clean.mtcars,goal.mtcars))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: remove-extra-column</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the extra column</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="co">#finally , we'll remove the extra two annoying calculation columns </span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="st">"wt + runif(n(), 2e-05, 2e-04)"</span>,<span class="sc">-</span><span class="st">"hp_per_cyl"</span>)</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="co">#now let's check the dataset if they're equal</span></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(clean.mtcars,goal.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># TRUE , fantastic </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="checkpoint-2" class="level2">
+<h2 class="anchored" data-anchor-id="checkpoint-2">Checkpoint 2</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect the dataset and compare to goal.mtcars</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+2        Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+3           Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+4       Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+5    Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+6              Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+7           Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+8            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+9             Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+10            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+11           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+12          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+13          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+14         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+15  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+16 Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+17   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+18            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+19         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+20      Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+21       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+22    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+23         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+24          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+25    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+26           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+27       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+28        Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+29      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+30        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+31       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+32          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>goal.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+2        Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+3           Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+4       Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+5    Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+6              Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+7           Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+8            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+9             Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+10            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+11           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+12          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+13          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+14         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+15  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+16 Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+17   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+18            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+19         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+20      Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+21       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+22    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+23         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+24          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+25    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+26           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+27       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+28        Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+29      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+30        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+31       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+32          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># all.equal()</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(clean.mtcars,goal.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># daff</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">render_diff</span>(<span class="fu">diff_data</span>(clean.mtcars,goal.mtcars))</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="co">#looks good !</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Questions:</p>
+<ol start="5" type="1">
+<li>Is your dataset identical to <code>goal.mtcars</code>? If not, what are the remaining issues? If there were any issues you could not resolve in code, describe a proposed solution in plain English.</li>
+</ol>
+<!-- answer below -->
+<p>#Aziz Answer to Question 5</p>
+<p>According to the all.equal task and render diff task , the data is now identical. The only thing I am not sure that I was supposed to do was to impute the NA values from the goal.mtcars, which may defeat the purpose of actually imputing a missing value by using the mean value of the column or remove the row. Since the instructions were not clear , I improvised and took the data from the goal.mtcars dataset.</p>
+<p>#Answer to Question 5 ended</p>
+</section>
+</section>
+<section id="optional-cleaning-tasks" class="level1">
+<h1>Optional Cleaning Tasks</h1>
+<p>You can call it a day here, or continue with the optional cleaning tasks below. These tasks are a chance to challenge yourself and practice your skills further. They are also additional opportunities to demonstrate mastery of course standards!</p>
+<section id="additional-guided-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="additional-guided-cleaning">Additional guided cleaning</h2>
+<p><em>Optional:</em> Complete any number of the following tasks to further clean the dataset. Each task should be in its own code chunk with an appropriate label and clearly commented code:</p>
+<ol type="1">
+<li>Create a new factor column <code>mpg_category</code> that categorizes <code>mpg</code> into “low”, “medium”, and “high” based on the distribution of <code>mpg</code> values.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co">#since this is more than two conditions , I am better off using mutate to accomodate all conditions.</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="co">#first , let's know what what the mean , min and max for mpg </span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(clean.mtcars<span class="sc">$</span>mpg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10.4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(clean.mtcars<span class="sc">$</span>mpg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 33.9</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(clean.mtcars<span class="sc">$</span>mpg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20.09062</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ok so the average is around 20 , the minimum is 10 and the maximum is around 34</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="co">#I can do better , let's try the summary function </span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(clean.mtcars<span class="sc">$</span>mpg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  10.40   15.43   19.20   20.09   22.80   33.90 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co">#the median is also around 19 , the third quartertile however begins at around 21</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="co"># my categories will then up to 15 is low, 15-23 is medium,above 23 is high</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="co">#I will use the mutate based on this post on stackflow </span></span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a><span class="co">#https://stackoverflow.com/questions/50001383/adding-a-new-column-based-upon-values-in-another-column-using-dplyr</span></span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(</span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">mpg_category=</span><span class="fu">case_when</span>(mpg<span class="sc">&lt;=</span><span class="dv">15</span> <span class="sc">~</span> <span class="st">"low"</span>,</span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>               (mpg<span class="sc">&gt;</span><span class="dv">15</span> <span class="sc">&amp;</span> mpg<span class="sc">&lt;=</span><span class="dv">23</span> <span class="sc">~</span> <span class="st">"medium"</span>),</span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>               (mpg<span class="sc">&gt;</span><span class="dv">23</span>)<span class="sc">~</span><span class="st">"high"</span>)</span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+2        Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+3           Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+4       Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+5    Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+6              Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+7           Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+8            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+9             Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+10            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+11           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+12          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+13          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+14         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+15  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+16 Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+17   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+18            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+19         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+20      Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+21       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+22    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+23         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+24          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+25    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+26           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+27       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+28        Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+29      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+30        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+31       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+32          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+   mpg_category
+1        medium
+2        medium
+3        medium
+4        medium
+5        medium
+6        medium
+7           low
+8          high
+9        medium
+10       medium
+11       medium
+12       medium
+13       medium
+14       medium
+15          low
+16          low
+17          low
+18         high
+19         high
+20         high
+21       medium
+22       medium
+23       medium
+24          low
+25       medium
+26         high
+27         high
+28         high
+29       medium
+30       medium
+31          low
+32       medium</code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Create a new factor column <code>wt_category</code> that categorizes <code>wt</code> into “light”, “medium”, and “heavy” based on the distribution of <code>wt</code> values, then reverse the order of the levels.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co">#will do the same thing , summarize the distribution fo the wt values</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(clean.mtcars<span class="sc">$</span>wt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.513   2.581   3.325   3.217   3.610   5.424 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ok so everything up to 2.58 is light, 2.58-3.61 is medium , and &gt;3.61 is heavy</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">wt_category=</span><span class="fu">case_when</span>(wt<span class="sc">&lt;=</span> <span class="fl">2.58</span> <span class="sc">~</span> <span class="st">"Light"</span>,</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>                        wt<span class="sc">&gt;</span><span class="fl">2.58</span> <span class="sc">&amp;</span> wt<span class="sc">&lt;=</span><span class="fl">3.61</span><span class="sc">~</span><span class="st">"Medium"</span>,</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>                        wt<span class="sc">&gt;</span><span class="fl">3.61</span><span class="sc">~</span><span class="st">"Heavy"</span>),</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#now I don't understand what is meant by "reverse the order of the levels", but I am assuming you mean "arrange them so that heavy appears first, then medium then light"</span></span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a><span class="co">#I will use the factor reverse technique I learned from stack overflow</span></span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a><span class="co">#https://stackoverflow.com/questions/30219971/best-practice-for-factor-and-reverse-in-r</span></span>
+<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a><span class="at">wt_category =</span> <span class="fu">factor</span>(wt_category,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Heavy"</span>,<span class="st">"Medium"</span>,<span class="st">"Light"</span>)),</span>
+<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">arrange</span>(wt_category)</span>
+<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a><span class="co">#now to ensure the levels are reversed and are presented as such </span></span>
+<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(clean.mtcars<span class="sc">$</span>wt_category)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Heavy"  "Medium" "Light" </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(clean.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1           Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+2           Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+3          Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+4   Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+5  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+6    Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+7           Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+8     Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+9            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+10       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+11      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+12   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+13             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+14          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+15           Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+16            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+17            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+18           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+19    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+20         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+21      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+22        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+23       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+24          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+25          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+26            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+27         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+28      Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+29       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+30           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+31       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+32        Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+   mpg_category wt_category
+1        medium       Heavy
+2        medium       Heavy
+3        medium       Heavy
+4           low       Heavy
+5           low       Heavy
+6           low       Heavy
+7           low       Heavy
+8        medium       Heavy
+9        medium      Medium
+10       medium      Medium
+11       medium      Medium
+12       medium      Medium
+13       medium      Medium
+14          low      Medium
+15         high      Medium
+16       medium      Medium
+17       medium      Medium
+18       medium      Medium
+19       medium      Medium
+20       medium      Medium
+21       medium      Medium
+22       medium      Medium
+23          low      Medium
+24       medium      Medium
+25       medium       Light
+26         high       Light
+27         high       Light
+28         high       Light
+29       medium       Light
+30         high       Light
+31         high       Light
+32         high       Light</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Create a new column <code>mpg_per_cyl</code> that calculates <code>mpg</code> divided by <code>cyl</code>.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co">#the mutate function allows this easily since it directly manipulates the data in all columns correspondingly</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">mpg_per_cyl=</span><span class="fu">round</span>(mpg<span class="sc">/</span>cyl,<span class="dv">2</span>))</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1           Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+2           Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+3          Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+4   Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+5  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+6    Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+7           Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+8     Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+9            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+10       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+11      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+12   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+13             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+14          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+15           Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+16            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+17            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+18           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+19    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+20         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+21      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+22        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+23       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+24          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+25          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+26            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+27         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+28      Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+29       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+30           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+31       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+32        Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+   mpg_category wt_category mpg_per_cyl
+1        medium       Heavy        2.05
+2        medium       Heavy        2.16
+3        medium       Heavy        1.90
+4           low       Heavy        1.30
+5           low       Heavy        1.30
+6           low       Heavy        1.84
+7           low       Heavy        1.66
+8        medium       Heavy        2.40
+9        medium      Medium        3.50
+10       medium      Medium        3.50
+11       medium      Medium        3.57
+12       medium      Medium        2.34
+13       medium      Medium        3.02
+14          low      Medium        1.79
+15         high      Medium        6.10
+16       medium      Medium        5.70
+17       medium      Medium        3.20
+18       medium      Medium        2.97
+19       medium      Medium        1.94
+20       medium      Medium        1.90
+21       medium      Medium        1.98
+22       medium      Medium        3.28
+23          low      Medium        1.88
+24       medium      Medium        5.35
+25       medium       Light        5.70
+26         high       Light        8.10
+27         high       Light        7.60
+28         high       Light        8.47
+29       medium       Light        5.38
+30         high       Light        6.82
+31         high       Light        6.50
+32         high       Light        7.60</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co">#done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="4" type="1">
+<li>Filter the data to only include cars with automatic transmissions. (Hint: <code>?mtcars</code> will show you useful info.)</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co">#let's use the hint </span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>?mtcars</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="co">#it seems the am decides which cars are automatic or manual (0=automatic,1=manual)</span></span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a><span class="co">#I will do this in two ways , the classic r way I picked up from stack overflow</span></span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>classicfilter.mtcars<span class="ot">&lt;-</span>clean.mtcars[clean.mtcars<span class="sc">$</span>am<span class="sc">==</span><span class="dv">0</span>,]</span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a>classicfilter.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1           Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+2           Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+3          Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+4   Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+5  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+6    Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+7           Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+8     Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+11      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+12   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+13             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+14          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+15           Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+16            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+17            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+18           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+19    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+20         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+29       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+   mpg_category wt_category mpg_per_cyl
+1        medium       Heavy        2.05
+2        medium       Heavy        2.16
+3        medium       Heavy        1.90
+4           low       Heavy        1.30
+5           low       Heavy        1.30
+6           low       Heavy        1.84
+7           low       Heavy        1.66
+8        medium       Heavy        2.40
+11       medium      Medium        3.57
+12       medium      Medium        2.34
+13       medium      Medium        3.02
+14          low      Medium        1.79
+15         high      Medium        6.10
+16       medium      Medium        5.70
+17       medium      Medium        3.20
+18       medium      Medium        2.97
+19       medium      Medium        1.94
+20       medium      Medium        1.90
+29       medium       Light        5.38</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co">#I personally like this method because it echoes python in how it uses an index of the dataframe to filter.</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="co">#going through the tidyverse documentation , there's a different way using the filter function</span></span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>cleanfilter.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">filter</span>(am<span class="sc">==</span><span class="dv">0</span>)</span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>cleanfilter.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1           Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+2           Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+3          Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+4   Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+5  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+6    Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+7           Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+8     Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+9       Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+10   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+11             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+12          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+13           Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+14            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+15            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+16           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+17    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+18         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+19       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+   mpg_category wt_category mpg_per_cyl
+1        medium       Heavy        2.05
+2        medium       Heavy        2.16
+3        medium       Heavy        1.90
+4           low       Heavy        1.30
+5           low       Heavy        1.30
+6           low       Heavy        1.84
+7           low       Heavy        1.66
+8        medium       Heavy        2.40
+9        medium      Medium        3.57
+10       medium      Medium        2.34
+11       medium      Medium        3.02
+12          low      Medium        1.79
+13         high      Medium        6.10
+14       medium      Medium        5.70
+15       medium      Medium        3.20
+16       medium      Medium        2.97
+17       medium      Medium        1.94
+18       medium      Medium        1.90
+19       medium       Light        5.38</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co">#got the same results ! </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="5" type="1">
+<li>Identify which variable would be better suited as a logical variable, then convert it to logical.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co">#first, I will try to know the mtcars columns and </span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>?mtcars</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="co">#so we see that vs (v-shaped or straight engine) and am (automatic or manual) are two logical variables. I will choose am for this question</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span> clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">am=</span><span class="fu">as.logical</span>(am))</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="co">#to make it make sense , I will rename am to manual ? that way TRUE or FALSE makes sense</span></span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">rename</span>(<span class="st">"manual?"</span><span class="ot">=</span>am)</span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs manual? gear carb
+1           Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0   FALSE    3    3
+2           Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0   FALSE    3    3
+3          Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0   FALSE    3    3
+4   Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0   FALSE    3    4
+5  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0   FALSE    3    4
+6    Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0   FALSE    3    4
+7           Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0   FALSE    3    4
+8     Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0   FALSE    3    2
+9            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0    TRUE    4    4
+10       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0    TRUE    4    4
+11      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1   FALSE    3    1
+12   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0   FALSE    3    2
+13             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1   FALSE    3    1
+14          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0   FALSE    3    4
+15           Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1   FALSE    4    2
+16            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1   FALSE    4    2
+17            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1   FALSE    4    4
+18           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1   FALSE    4    4
+19    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0   FALSE    3    2
+20         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0   FALSE    3    2
+21      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0    TRUE    5    4
+22        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0    TRUE    5    6
+23       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0    TRUE    5    8
+24          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1    TRUE    4    2
+25          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1    TRUE    4    1
+26            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1    TRUE    4    1
+27         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1    TRUE    4    2
+28      Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1    TRUE    4    1
+29       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1   FALSE    3    1
+30           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1    TRUE    4    1
+31       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0    TRUE    5    2
+32        Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1    TRUE    5    2
+   mpg_category wt_category mpg_per_cyl
+1        medium       Heavy        2.05
+2        medium       Heavy        2.16
+3        medium       Heavy        1.90
+4           low       Heavy        1.30
+5           low       Heavy        1.30
+6           low       Heavy        1.84
+7           low       Heavy        1.66
+8        medium       Heavy        2.40
+9        medium      Medium        3.50
+10       medium      Medium        3.50
+11       medium      Medium        3.57
+12       medium      Medium        2.34
+13       medium      Medium        3.02
+14          low      Medium        1.79
+15         high      Medium        6.10
+16       medium      Medium        5.70
+17       medium      Medium        3.20
+18       medium      Medium        2.97
+19       medium      Medium        1.94
+20       medium      Medium        1.90
+21       medium      Medium        1.98
+22       medium      Medium        3.28
+23          low      Medium        1.88
+24       medium      Medium        5.35
+25       medium       Light        5.70
+26         high       Light        8.10
+27         high       Light        7.60
+28         high       Light        8.47
+29       medium       Light        5.38
+30         high       Light        6.82
+31         high       Light        6.50
+32         high       Light        7.60</code></pre>
+</div>
+</div>
+<ol start="6" type="1">
+<li>Sort the dataset by <code>mpg_category</code> then reverse alphabetically by <code>model</code> (so that models with the same <code>mpg_category</code> are sorted Z to A).</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co">#using the arrange function from dplyr and the desc function , learned from https://stackoverflow.com/questions/68311426/nested-functions-arrange-and-desc</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="co">#I should be able to introduce two levels of grouping </span></span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">arrange</span>(mpg_category,<span class="fu">desc</span>(model))</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs manual? gear carb
+1       Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1    TRUE    4    1
+2        Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0    TRUE    5    2
+3            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1   FALSE    4    2
+4         Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1    TRUE    5    2
+5          Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1    TRUE    4    2
+6            Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1    TRUE    4    1
+7             Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1    TRUE    4    1
+8        Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0    TRUE    5    8
+9  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0   FALSE    3    4
+10          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0   FALSE    3    4
+11   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0   FALSE    3    4
+12          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0   FALSE    3    4
+13  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0   FALSE    3    4
+14          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1    TRUE    4    2
+15             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1   FALSE    3    1
+16       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1   FALSE    3    1
+17    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0   FALSE    3    2
+18         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0   FALSE    3    3
+19          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0   FALSE    3    3
+20          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0   FALSE    3    3
+21           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1   FALSE    4    4
+22            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1   FALSE    4    4
+23            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1   FALSE    4    2
+24       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0    TRUE    4    4
+25           Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0    TRUE    4    4
+26   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0   FALSE    3    2
+27      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1   FALSE    3    1
+28      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0    TRUE    5    4
+29        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0    TRUE    5    6
+30    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0   FALSE    3    2
+31          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1    TRUE    4    1
+32         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0   FALSE    3    2
+   mpg_category wt_category mpg_per_cyl
+1          high       Light        8.47
+2          high       Light        6.50
+3          high      Medium        6.10
+4          high       Light        7.60
+5          high       Light        7.60
+6          high       Light        6.82
+7          high       Light        8.10
+8           low      Medium        1.88
+9           low       Heavy        1.30
+10          low      Medium        1.79
+11          low       Heavy        1.84
+12          low       Heavy        1.66
+13          low       Heavy        1.30
+14       medium      Medium        5.35
+15       medium      Medium        3.02
+16       medium       Light        5.38
+17       medium       Heavy        2.40
+18       medium       Heavy        1.90
+19       medium       Heavy        2.16
+20       medium       Heavy        2.05
+21       medium      Medium        2.97
+22       medium      Medium        3.20
+23       medium      Medium        5.70
+24       medium      Medium        3.50
+25       medium      Medium        3.50
+26       medium      Medium        2.34
+27       medium      Medium        3.57
+28       medium      Medium        1.98
+29       medium      Medium        3.28
+30       medium      Medium        1.94
+31       medium       Light        5.70
+32       medium      Medium        1.90</code></pre>
+</div>
+</div>
+<ol start="7" type="1">
+<li>Write the cleaned dataset as a csv file called <code>clean-mtcars.csv</code>, then read the csv back in maintaining the correct data types.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Referring to this post https://stackoverflow.com/questions/62006325/export-r-data-to-csv </span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="co">#the command line is simple and is similar to python , which I am familiar with</span></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="co">#let me first get to know the arguments of this line </span></span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>?write.csv</span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a><span class="co">#so the reaosn why we have to set the row.names=FALSE is because originally it's set as TRUE , and we do not necessarily want that for this csv. </span></span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(clean.mtcars,<span class="st">"/Users/abdulaziz/Desktop/University of Chicago/clean-mtcars.csv"</span>,<span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="unguided-cleaning-and-transformation" class="level2">
+<h2 class="anchored" data-anchor-id="unguided-cleaning-and-transformation">Unguided cleaning and transformation</h2>
+<p><em>Optional:</em> If you have the time and interest, continue transforming this dataset as you please. Create new columns based on the existing ones, reformat strings, try your hand at a regex replacement, summarize by groups (factor levels), visualize a simple relationship, or anything else you can think of. You can do this in addition to or instead of the suggested additional cleaning tasks above.</p>
+</section>
+</section>
+<section id="azizs-ambitious-unguided-cleaning-and-transformation" class="level1">
+<h1>Aziz’s ambitious unguided cleaning and transformation</h1>
+<p>To demonstrate some of the abilities I want to master in R , I will create an extra column to identify the country of origin for each of the car makes. Then , I will create rudimentary statistics , plots, graphs and hypotheses to make inferences about the auto-industry for each country.</p>
+<section id="step-1-create-the-make-column" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-create-the-make-column">STEP 1: Create the Make Column</h3>
+<p>Let’s demonstrate how we can create a new column and use the StringR library to extract the first word in the model column (which is usually the make of the car)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co">#I used this regex cheat sheet from gitlab:https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="co">#I will create a new column and save the first word in the model to it </span></span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Since there are no whitespaces before the first word, I am telling the code to detect the first whitespace, I am telling the code to EXTRACT EVERYTHING BEFORE THE FIRST SPACE </span></span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Make=</span> <span class="fu">str_extract</span>(model,<span class="st">"^[^</span><span class="sc">\\</span><span class="st">s]+"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-2-create-the-country-column" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-create-the-country-column">STEP 2: Create the Country Column</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co">#STEP 2: I will use my car knowledge (and wikipedia) and the case_when function to sort them ,</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Country=</span><span class="fu">case_when</span>(Make<span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Toyota"</span>,<span class="st">"Honda"</span>,<span class="st">"Mazda"</span>,<span class="st">"Datsun"</span>) <span class="sc">~</span><span class="st">"Japan"</span>,</span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Porsche"</span>,<span class="st">"Merc"</span>)<span class="sc">~</span><span class="st">"Germany"</span>,<span class="co">#using %in% allows for an OR logic in case_when</span></span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">==</span><span class="st">"Lotus"</span><span class="sc">~</span><span class="st">"United Kingdom"</span>,</span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">%in%</span>         <span class="fu">c</span>(<span class="st">"Lincoln"</span>,<span class="st">"Duster"</span>,<span class="st">"Pontiac"</span>,<span class="st">"Chrysler"</span>,<span class="st">"Camaro"</span>,<span class="st">"Cadillac"</span>,<span class="st">"AMC"</span>,<span class="st">"Dodge"</span>,<span class="st">"Ford"</span>,<span class="st">"Hornet"</span>,<span class="st">"Valiant"</span>)<span class="sc">~</span><span class="st">"USA"</span>, </span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">==</span><span class="st">"Volvo"</span><span class="sc">~</span><span class="st">"Sweden"</span>,</span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Ferrari"</span>,<span class="st">"Fiat"</span>,<span class="st">"Maserati"</span>)<span class="sc">~</span><span class="st">"Italy"</span>))</span>
+<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs manual? gear carb
+1       Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1    TRUE    4    1
+2        Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0    TRUE    5    2
+3            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1   FALSE    4    2
+4         Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1    TRUE    5    2
+5          Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1    TRUE    4    2
+6            Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1    TRUE    4    1
+7             Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1    TRUE    4    1
+8        Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0    TRUE    5    8
+9  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0   FALSE    3    4
+10          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0   FALSE    3    4
+11   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0   FALSE    3    4
+12          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0   FALSE    3    4
+13  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0   FALSE    3    4
+14          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1    TRUE    4    2
+15             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1   FALSE    3    1
+16       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1   FALSE    3    1
+17    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0   FALSE    3    2
+18         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0   FALSE    3    3
+19          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0   FALSE    3    3
+20          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0   FALSE    3    3
+21           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1   FALSE    4    4
+22            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1   FALSE    4    4
+23            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1   FALSE    4    2
+24       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0    TRUE    4    4
+25           Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0    TRUE    4    4
+26   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0   FALSE    3    2
+27      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1   FALSE    3    1
+28      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0    TRUE    5    4
+29        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0    TRUE    5    6
+30    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0   FALSE    3    2
+31          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1    TRUE    4    1
+32         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0   FALSE    3    2
+   mpg_category wt_category mpg_per_cyl     Make        Country
+1          high       Light        8.47   Toyota          Japan
+2          high       Light        6.50  Porsche        Germany
+3          high      Medium        6.10     Merc        Germany
+4          high       Light        7.60    Lotus United Kingdom
+5          high       Light        7.60    Honda          Japan
+6          high       Light        6.82     Fiat          Italy
+7          high       Light        8.10     Fiat          Italy
+8           low      Medium        1.88 Maserati          Italy
+9           low       Heavy        1.30  Lincoln            USA
+10          low      Medium        1.79   Duster            USA
+11          low       Heavy        1.84 Chrysler            USA
+12          low       Heavy        1.66   Camaro            USA
+13          low       Heavy        1.30 Cadillac            USA
+14       medium      Medium        5.35    Volvo         Sweden
+15       medium      Medium        3.02  Valiant            USA
+16       medium       Light        5.38   Toyota          Japan
+17       medium       Heavy        2.40  Pontiac            USA
+18       medium       Heavy        1.90     Merc        Germany
+19       medium       Heavy        2.16     Merc        Germany
+20       medium       Heavy        2.05     Merc        Germany
+21       medium      Medium        2.97     Merc        Germany
+22       medium      Medium        3.20     Merc        Germany
+23       medium      Medium        5.70     Merc        Germany
+24       medium      Medium        3.50    Mazda          Japan
+25       medium      Medium        3.50    Mazda          Japan
+26       medium      Medium        2.34   Hornet            USA
+27       medium      Medium        3.57   Hornet            USA
+28       medium      Medium        1.98     Ford            USA
+29       medium      Medium        3.28  Ferrari          Italy
+30       medium      Medium        1.94    Dodge            USA
+31       medium       Light        5.70   Datsun          Japan
+32       medium      Medium        1.90      AMC            USA</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co">#success !</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-3-basic-descriptive-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="step-3-basic-descriptive-statistics">STEP 3: Basic Descriptive Statistics</h3>
+<p>Now that we have successfully added two new columns (Make and Country), we can establish some basic descriptive statistics</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co">#let's arrange the countries by the aggregate weight of their cars</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>Weight.by.country<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Country) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Average.Weight=</span><span class="fu">round</span>(<span class="fu">mean</span>(wt,<span class="at">na.rm=</span><span class="cn">TRUE</span>),<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Average.Weight))</span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Weight.by.country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  Country        Average.Weight
+  &lt;chr&gt;                   &lt;dbl&gt;
+1 USA                      3.96
+2 Germany                  3.37
+3 Sweden                   2.78
+4 Italy                    2.62
+5 Japan                    2.29
+6 United Kingdom           1.51</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co">#now let's arrange them by horsepower (hypothesis: US will have the highest cuz 'MURICA)</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>Hp.by.country<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">group_by</span>(Country)<span class="sc">%&gt;%</span><span class="fu">summarize</span>(<span class="at">Average.Horsepower=</span><span class="fu">round</span>(<span class="fu">mean</span>(hp,<span class="at">na.rm=</span><span class="cn">TRUE</span>),<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Average.Horsepower))</span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Hp.by.country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  Country        Average.Horsepower
+  &lt;chr&gt;                       &lt;dbl&gt;
+1 USA                         189. 
+2 Italy                       160. 
+3 Germany                     129. 
+4 United Kingdom              113  
+5 Sweden                      109  
+6 Japan                        87.8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co">#p-value equals MURRICCCAA</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="co">#ok now let's see horsepower distributed by weight aggregated for all countries</span></span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>Horsepower.by.Weight<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">hppwt=</span><span class="fu">round</span>(hp<span class="sc">/</span>wt,<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">group_by</span>(Country)<span class="sc">%&gt;%</span><span class="fu">summarize</span>(<span class="at">Average.HorsepowerbyWeight=</span><span class="fu">round</span>(<span class="fu">mean</span>(hppwt),<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Average.HorsepowerbyWeight))</span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Horsepower.by.Weight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  Country        Average.HorsepowerbyWeight
+  &lt;chr&gt;                               &lt;dbl&gt;
+1 United Kingdom                       74.7
+2 Italy                                55.3
+3 USA                                  48.7
+4 Sweden                               39.2
+5 Germany                              38.0
+6 Japan                                37.9</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="sc">$</span>Make<span class="ot">=</span><span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">s.*"</span>,<span class="st">""</span>,clean.mtcars<span class="sc">$</span>model)</span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="co">#USA came in third. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="submission-assessment" class="level1">
+<h1>Submission &amp; Assessment</h1>
+<p>To submit:</p>
+<ol type="1">
+<li>Modify the <code>assessment.md</code> in this mini-project’s directory:
+<ol type="1">
+<li>Check off all objectives you believe you have demonstrated</li>
+<li>Indicate which objectives you are meeting for the first time (if any)</li>
+<li>Complete any relevant open-ended items</li>
+</ol></li>
+<li>Push your changes to your centralized assignment repository on GitHub.</li>
+<li>Confirm that Dr.&nbsp;Dowling and your section TA are added as collaborators to your repository.</li>
+<li>Submit your work in your next open mini-project assignment by including the following information in the text box:
+<ol type="1">
+<li>The title of the assignment: “Assignment: Clean the mtcars Dataset (Level 1)”</li>
+<li>A link to the <strong>directory</strong> for this assignment in your centralized assignment repo</li>
+</ol></li>
+</ol>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Why? The <code>mtcars</code> dataset includes models names as <em>row names</em> rather than as a variable/column. For the purposes of this cleaning exercise, it’s more useful to treat model names as a variable.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
