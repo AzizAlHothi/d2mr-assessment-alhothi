@@ -439,6 +439,7 @@ You can call it a day here, or continue with the optional cleaning tasks below. 
 
 1. Create a new factor column `mpg_category` that categorizes `mpg` into "low", "medium", and "high" based on the distribution of `mpg` values.
 ```{r miniproject1-guided-additional-1}
+#| label: Guided-Additional-1
 #since this is more than two conditions , I am better off using mutate to accomodate all conditions.
 #first , let's know what what the mean , min and max for mpg 
 min(clean.mtcars$mpg)
@@ -466,6 +467,7 @@ clean.mtcars
 
 2. Create a new factor column `wt_category` that categorizes `wt` into "light", "medium", and "heavy" based on the distribution of `wt` values, then reverse the order of the levels.
 ```{r miniproject1-guided-additional-2}
+#| label: Guided-Additional-2
 #will do the same thing , summarize the distribution fo the wt values
 summary(clean.mtcars$wt)
 
@@ -488,6 +490,7 @@ print(clean.mtcars)
 ```
 3. Create a new column `mpg_per_cyl` that calculates `mpg` divided by `cyl`.
 ```{r miniproject1-guided-additional-3}
+#| label: Guided-Additional-3
 
 #the mutate function allows this easily since it directly manipulates the data in all columns correspondingly
 clean.mtcars<-clean.mtcars%>% mutate(mpg_per_cyl=round(mpg/cyl,2))
@@ -499,6 +502,7 @@ clean.mtcars
 ```
 4. Filter the data to only include cars with automatic transmissions. (Hint: `?mtcars` will show you useful info.)
 ``` {r miniproject1-guided-additional-4}
+#| label: Guided-Additional-4
 #let's use the hint 
 
 ?mtcars
@@ -523,6 +527,7 @@ cleanfilter.mtcars
 
 5. Identify which variable would be better suited as a logical variable, then convert it to logical.
 ``` {r miniproject1-guided-additional-5}
+#| label: Guided-Additional-5
 #first, I will try to know the mtcars columns and 
 ?mtcars
 #so we see that vs (v-shaped or straight engine) and am (automatic or manual) are two logical variables. I will choose am for this question
@@ -532,6 +537,7 @@ clean.mtcars
 ```
 6. Sort the dataset by `mpg_category` then reverse alphabetically by `model` (so that models with the same `mpg_category` are sorted Z to A).
 ``` {r miniproject1-guided-additional-6}
+#| label: Guided-Additional-6
 #using the arrange function from dplyr and the desc function , learned from https://stackoverflow.com/questions/68311426/nested-functions-arrange-and-desc
 #I should be able to introduce two levels of grouping 
 clean.mtcars<-clean.mtcars%>%arrange(mpg_category,desc(model))
@@ -539,6 +545,7 @@ clean.mtcars
 ```
 7. Write the cleaned dataset as a csv file called `clean-mtcars.csv`, then read the csv back in maintaining the correct data types.
 ``` {r miniproject1-guided-additional-7}
+#| label: Guided-Additional-7
 # Referring to this post https://stackoverflow.com/questions/62006325/export-r-data-to-csv 
 #the command line is simple and is similar to python , which I am familiar with
 #let me first get to know the arguments of this line 
@@ -565,7 +572,7 @@ To demonstrate some of the abilities I want to master in R , I will create an ex
 Let's demonstrate how we can create a new column and use the StringR library to extract the first word in the model column (which is usually the make of the car)
 
 ``` {r miniproject1-unguided-additional- Extracting the Make}
-
+#| label: Creating a Make Column
 #I used this regex cheat sheet from gitlab:https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf
 
 #I will create a new column and save the first word in the model to it 
@@ -580,6 +587,7 @@ clean.mtcars<-clean.mtcars%>% mutate(Make= str_extract(model,"^[^\\s]+"))
 
 ### STEP 2: Create the Country Column
 ``` {r miniproject1-unguided-additiona- Creating the Country}
+#| label: Creating the Country Column
 #STEP 2: I will use my car knowledge (and wikipedia) and the case_when function to sort them ,
 
 clean.mtcars<-clean.mtcars%>% mutate(Country=case_when(Make%in% c("Toyota","Honda","Mazda","Datsun") ~"Japan",
@@ -601,7 +609,7 @@ clean.mtcars
 Now that we have successfully added two new columns (Make and Country), we can establish some basic descriptive statistics using arranged tables
 
 ``` {r miniproject1-unguided-additional-basic statistics and rankings}
-
+#| label: Descriptive Statistics 
 #let's arrange the countries by the aggregate weight of their cars
 Weight.by.country<-clean.mtcars%>% group_by(Country) %>% summarize(Average.Weight=round(mean(wt,na.rm=TRUE),2))%>%arrange(desc(Average.Weight))
 
@@ -633,6 +641,7 @@ paste("The USA's rank in horsepower/weight is: ",USA_rank)#paste makes it easier
 
 ### STEP 4: Create descriptive plots and figures 
 ```{r miniproject1-unguided-additional-descriptive_visualization}
+#| label: Descriptive Plots
 #The packages ggplot2 and ggpattern will allows to maximally customize our plots and figures. 
 
 library(ggplot2)
@@ -660,7 +669,7 @@ ggplot(data = Horsepower.by.Weight, aes(x = Country, y = HpbW, fill = Country)) 
 With the data available after cleaning, we can now come up with a hypothesis by inspecting the data, 
 and testing our hypothesis statistically.
 ```{r miniproject1-unguided-additional-Hypothesis,lm-testing}
-#| label: The Hypothesis and the Test 
+#| label: The Hypothesis Test with Linear Regression
 # My hypothesis is that cars with higher weight will have lower mpg 
 #in linear regression terms, weight (wt) is a negative coefficient of mpg 
 H1.test<-lm(mpg~wt, data=clean.mtcars) #built-in stats package uses lm() as linear regression
@@ -673,6 +682,7 @@ summary(H2.test)
 #####Horsepower is a significant negative predictor but with a minimal effect
 #### 5.2 Generating Inferential Plot for Linear Mixed Effects Regression
 ```{r miniproject1-unguided-additional-Hypothesis,lm-visualization}
+#| label: Visualizing Linear Regression
 ggplot(clean.mtcars,aes(x=hp,y=mpg))+
   geom_point(color="blue")+ #Scatterplot "points"
   geom_smooth(method="lm",se=TRUE,#regression line with shaded region (se=TRUE)
@@ -694,6 +704,7 @@ ggplot(clean.mtcars,aes(x=hp,y=mpg))+
 ##### 5.3 Establishing a Hypothesis and a test (ANOVA test)
 ###### Let's say I want to test how different transmision types (automatic v. manual) affect miles per gallon, so my hypothesis is that on average, the automatic transmission will have a lower mpg than the manual 
 ```{r miniproject1-unguided-additional-Hypothesis,anova-testing}
+#| label: Hypothesis Testing with ANOVA
 #to represent the factors clearly, I am adding a column that indicates automatic or manual as per the am column
 clean.mtcars<-clean.mtcars%>%mutate(Transmission = factor(case_when(am == 0 ~ "Automatic",am == 1 ~"Manual")))
 #running the anova test of how mpg is affected by transmission
@@ -703,6 +714,7 @@ summary(anova_test) #prints out the ANOVA test results
 ##### 5.4 Generating Inferential Plot for ANOVA model
 ###### Now that we know that transmission is a statistically significant factor in mpg (p<0.001), let's visualize these results with a violin plot
 ```{r miniproject1-unguided-additional-Hypothesis,anova-visualization}
+#| label: Visualizing ANOVA Results
 ggplot(clean.mtcars,aes(x=Transmission,y=mpg,fill=Transmission))+
   geom_violin(trim=FALSE,alpha=0.8) + #80% opacity used for the violin plot,Trim deactivated for smoother ends
   stat_summary(fun= mean, geom="crossbar",color="red") + # adding a line to the mean to ease the comparison
@@ -724,6 +736,7 @@ ggplot(clean.mtcars,aes(x=Transmission,y=mpg,fill=Transmission))+
 ##### 5.5 Multivariate Plot
 ###### Let's see if we can add the number of cylinders,as well number of gears as a color and shape modulators when comparing between Horsepower and MpG
 ```{r miniproject1-unguided-additional-Hypothesis,Multivariate Plot}
+#| label: Creating a Multivariate plot
 ggplot(clean.mtcars,aes(x=hp,y=mpg,color=factor(cyl),shape=factor(gear))) + #cylinders is colors, no.gears is shape
   geom_point(size=3) + #scatterplot with size 3 data points
   labs(title="Figure 4: Horsepower v. Miles/Gallon with Gears and Cylinders ",x="Horsepower(hp)",y="Miles per Gallon (mpg)",color = "Number of Cylinders",shape="Number of Forward Gears")+
