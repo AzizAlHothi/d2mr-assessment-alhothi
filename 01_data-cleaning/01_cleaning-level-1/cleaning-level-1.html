@@ -99,13 +99,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="objective" class="level1">
 <h1>Objective</h1>
 <p>The objective of this assignment is to practice cleaning and transforming a messy dataset using tidyverse functions. You will use skills like renaming and reordering columns, sorting rows, changing data types, mutating data, and using the stringr and forcats packages.</p>
-<p>In this Level 1 Cleaning assignment, you will work with a simple dataset and focus on basic data cleaning tasks. Most tasks are outlined in the assignment script. You may want to review the <a href="">Data Cleaning Walkthrough</a> before you begin.</p>
-<p>You may additionally or alternatively complete the <a href="">Level 2 Data Cleaning assignment</a>. In Level 2, you will work with a more complex dataset and perform additional cleaning tasks with less direct instruction. The Level 2 assignment has more opportunities to demonstrating meeting course standards than this Level 1 assignment and is recommended for those who are already comfortable with the tasks in this assignment.</p>
+<p>In this Level 1 Cleaning assignment, you will work with a simple dataset and focus on basic data cleaning tasks. Most tasks are outlined in the assignment script. You may want to review the <a href="https://github.com/nrdowling/d2mr-assessment/tree/main/01_data-cleaning/00_cleaning-walkthrough">Data Cleaning Walkthrough</a> before you begin.</p>
+<p>You may additionally or alternatively complete the <a href="https://github.com/nrdowling/d2mr-assessment/tree/main/01_data-cleaning/01_cleaning-level-2">Level 2 Data Cleaning assignment</a>. In Level 2, you will work with a more complex dataset and perform additional cleaning tasks with less direct instruction. The Level 2 assignment has more opportunities to demonstrating meeting course standards than this Level 1 assignment and is recommended for those who are already comfortable with the tasks in this assignment.</p>
 </section>
 <section id="instructions" class="level1">
 <h1>Instructions</h1>
 <ol type="1">
-<li>If you have not already done so, pull the latest changes from the <code>d2mr-assignments</code> repository to ensure you have the most up-to-date version of the assignment files. Confirm you are working in your fork of the repository.</li>
+<li>If you have not already done so, pull the latest changes from the <code>d2mr-assessment</code> repository to ensure you have the most up-to-date version of the assignment files. Confirm you are working in your fork of the repository.</li>
 <li>Open <code>cleaning-level-1.qmd</code> in RStudio and follow the instructions in the Setup section below to load and inspect the (clean) <code>goal.mtcars</code> dataset.
 <ul>
 <li><strong>Important:</strong> The provided code makes a small modification to the original <code>mtcars</code> dataset to create a <code>goal.mtcars</code> dataset. You will use this goal dataset as a reference to clean the <code>messy-mtcars.csv</code> dataset, not the true original.</li>
@@ -1257,20 +1257,19 @@ Valiant                        3.46012171370017             17.5</code></pre>
 <span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(</span>
 <span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">wt_category=</span><span class="fu">case_when</span>(wt<span class="sc">&lt;=</span> <span class="fl">2.58</span> <span class="sc">~</span> <span class="st">"Light"</span>,</span>
 <span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>                        wt<span class="sc">&gt;</span><span class="fl">2.58</span> <span class="sc">&amp;</span> wt<span class="sc">&lt;=</span><span class="fl">3.61</span><span class="sc">~</span><span class="st">"Medium"</span>,</span>
-<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>                        wt<span class="sc">&gt;</span><span class="fl">3.61</span><span class="sc">~</span><span class="st">"Heavy"</span>),</span>
-<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#now I don't understand what is meant by "reverse the order of the levels", but I am assuming you mean "arrange them so that heavy appears first, then medium then light"</span></span>
-<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a><span class="co">#I will use the factor reverse technique I learned from stack overflow</span></span>
-<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a><span class="co">#https://stackoverflow.com/questions/30219971/best-practice-for-factor-and-reverse-in-r</span></span>
-<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a><span class="at">wt_category =</span> <span class="fu">factor</span>(wt_category,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Heavy"</span>,<span class="st">"Medium"</span>,<span class="st">"Light"</span>)),</span>
-<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">arrange</span>(wt_category)</span>
-<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a><span class="co">#now to ensure the levels are reversed and are presented as such </span></span>
-<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(clean.mtcars<span class="sc">$</span>wt_category)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>                        wt<span class="sc">&gt;</span><span class="fl">3.61</span><span class="sc">~</span><span class="st">"Heavy"</span>)</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">%&gt;%</span></span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">wt_category =</span> <span class="fu">factor</span>(wt_category,<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Heavy"</span>,<span class="st">"Medium"</span>,<span class="st">"Light"</span>))</span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(wt_category)<span class="sc">%&gt;%</span><span class="co">#arranges the factors </span></span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
+<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">wt_category=</span><span class="fu">fct_rev</span>(wt_category)</span>
+<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="co">#reversing using fct_rev,which comes from the forcats package</span></span>
+<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a><span class="co">#now to ensure the levels are reversed and are presented as such </span></span>
+<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(clean.mtcars<span class="sc">$</span>wt_category)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Heavy"  "Medium" "Light" </code></pre>
+<pre><code>[1] "Light"  "Medium" "Heavy" </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(clean.mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1534,79 +1533,76 @@ Valiant                        3.46012171370017             17.5</code></pre>
 <div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co">#first, I will try to know the mtcars columns and </span></span>
 <span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>?mtcars</span>
 <span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="co">#so we see that vs (v-shaped or straight engine) and am (automatic or manual) are two logical variables. I will choose am for this question</span></span>
-<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span> clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">am=</span><span class="fu">as.logical</span>(am))</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span> clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Manual =</span><span class="fu">as.logical</span>(am))</span>
 <span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="co">#to make it make sense , I will rename am to manual ? that way TRUE or FALSE makes sense</span></span>
-<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">rename</span>(<span class="st">"manual?"</span><span class="ot">=</span>am)</span>
-<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs manual? gear carb
-1           Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0   FALSE    3    3
-2           Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0   FALSE    3    3
-3          Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0   FALSE    3    3
-4   Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0   FALSE    3    4
-5  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0   FALSE    3    4
-6    Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0   FALSE    3    4
-7           Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0   FALSE    3    4
-8     Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0   FALSE    3    2
-9            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0    TRUE    4    4
-10       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0    TRUE    4    4
-11      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1   FALSE    3    1
-12   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0   FALSE    3    2
-13             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1   FALSE    3    1
-14          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0   FALSE    3    4
-15           Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1   FALSE    4    2
-16            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1   FALSE    4    2
-17            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1   FALSE    4    4
-18           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1   FALSE    4    4
-19    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0   FALSE    3    2
-20         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0   FALSE    3    2
-21      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0    TRUE    5    4
-22        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0    TRUE    5    6
-23       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0    TRUE    5    8
-24          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1    TRUE    4    2
-25          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1    TRUE    4    1
-26            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1    TRUE    4    1
-27         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1    TRUE    4    2
-28      Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1    TRUE    4    1
-29       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1   FALSE    3    1
-30           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1    TRUE    4    1
-31       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0    TRUE    5    2
-32        Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1    TRUE    5    2
-   mpg_category wt_category mpg_per_cyl
-1        medium       Heavy        2.05
-2        medium       Heavy        2.16
-3        medium       Heavy        1.90
-4           low       Heavy        1.30
-5           low       Heavy        1.30
-6           low       Heavy        1.84
-7           low       Heavy        1.66
-8        medium       Heavy        2.40
-9        medium      Medium        3.50
-10       medium      Medium        3.50
-11       medium      Medium        3.57
-12       medium      Medium        2.34
-13       medium      Medium        3.02
-14          low      Medium        1.79
-15         high      Medium        6.10
-16       medium      Medium        5.70
-17       medium      Medium        3.20
-18       medium      Medium        2.97
-19       medium      Medium        1.94
-20       medium      Medium        1.90
-21       medium      Medium        1.98
-22       medium      Medium        3.28
-23          low      Medium        1.88
-24       medium      Medium        5.35
-25       medium       Light        5.70
-26         high       Light        8.10
-27         high       Light        7.60
-28         high       Light        8.47
-29       medium       Light        5.38
-30         high       Light        6.82
-31         high       Light        6.50
-32         high       Light        7.60</code></pre>
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1           Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+2           Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+3          Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+4   Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+5  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+6    Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+7           Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+8     Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+9            Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+10       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+11      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+12   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+13             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+14          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+15           Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+16            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+17            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+18           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+19    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+20         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+21      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+22        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+23       Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+24          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+25          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+26            Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+27         Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+28      Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+29       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+30           Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+31       Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+32        Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+   mpg_category wt_category mpg_per_cyl Manual
+1        medium       Heavy        2.05  FALSE
+2        medium       Heavy        2.16  FALSE
+3        medium       Heavy        1.90  FALSE
+4           low       Heavy        1.30  FALSE
+5           low       Heavy        1.30  FALSE
+6           low       Heavy        1.84  FALSE
+7           low       Heavy        1.66  FALSE
+8        medium       Heavy        2.40  FALSE
+9        medium      Medium        3.50   TRUE
+10       medium      Medium        3.50   TRUE
+11       medium      Medium        3.57  FALSE
+12       medium      Medium        2.34  FALSE
+13       medium      Medium        3.02  FALSE
+14          low      Medium        1.79  FALSE
+15         high      Medium        6.10  FALSE
+16       medium      Medium        5.70  FALSE
+17       medium      Medium        3.20  FALSE
+18       medium      Medium        2.97  FALSE
+19       medium      Medium        1.94  FALSE
+20       medium      Medium        1.90  FALSE
+21       medium      Medium        1.98   TRUE
+22       medium      Medium        3.28   TRUE
+23          low      Medium        1.88   TRUE
+24       medium      Medium        5.35   TRUE
+25       medium       Light        5.70   TRUE
+26         high       Light        8.10   TRUE
+27         high       Light        7.60   TRUE
+28         high       Light        8.47   TRUE
+29       medium       Light        5.38  FALSE
+30         high       Light        6.82   TRUE
+31         high       Light        6.50   TRUE
+32         high       Light        7.60   TRUE</code></pre>
 </div>
 </div>
 <ol start="6" type="1">
@@ -1618,72 +1614,72 @@ Valiant                        3.46012171370017             17.5</code></pre>
 <span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">arrange</span>(mpg_category,<span class="fu">desc</span>(model))</span>
 <span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs manual? gear carb
-1       Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1    TRUE    4    1
-2        Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0    TRUE    5    2
-3            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1   FALSE    4    2
-4         Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1    TRUE    5    2
-5          Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1    TRUE    4    2
-6            Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1    TRUE    4    1
-7             Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1    TRUE    4    1
-8        Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0    TRUE    5    8
-9  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0   FALSE    3    4
-10          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0   FALSE    3    4
-11   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0   FALSE    3    4
-12          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0   FALSE    3    4
-13  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0   FALSE    3    4
-14          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1    TRUE    4    2
-15             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1   FALSE    3    1
-16       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1   FALSE    3    1
-17    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0   FALSE    3    2
-18         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0   FALSE    3    3
-19          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0   FALSE    3    3
-20          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0   FALSE    3    3
-21           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1   FALSE    4    4
-22            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1   FALSE    4    4
-23            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1   FALSE    4    2
-24       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0    TRUE    4    4
-25           Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0    TRUE    4    4
-26   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0   FALSE    3    2
-27      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1   FALSE    3    1
-28      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0    TRUE    5    4
-29        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0    TRUE    5    6
-30    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0   FALSE    3    2
-31          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1    TRUE    4    1
-32         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0   FALSE    3    2
-   mpg_category wt_category mpg_per_cyl
-1          high       Light        8.47
-2          high       Light        6.50
-3          high      Medium        6.10
-4          high       Light        7.60
-5          high       Light        7.60
-6          high       Light        6.82
-7          high       Light        8.10
-8           low      Medium        1.88
-9           low       Heavy        1.30
-10          low      Medium        1.79
-11          low       Heavy        1.84
-12          low       Heavy        1.66
-13          low       Heavy        1.30
-14       medium      Medium        5.35
-15       medium      Medium        3.02
-16       medium       Light        5.38
-17       medium       Heavy        2.40
-18       medium       Heavy        1.90
-19       medium       Heavy        2.16
-20       medium       Heavy        2.05
-21       medium      Medium        2.97
-22       medium      Medium        3.20
-23       medium      Medium        5.70
-24       medium      Medium        3.50
-25       medium      Medium        3.50
-26       medium      Medium        2.34
-27       medium      Medium        3.57
-28       medium      Medium        1.98
-29       medium      Medium        3.28
-30       medium      Medium        1.94
-31       medium       Light        5.70
-32       medium      Medium        1.90</code></pre>
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1       Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+2        Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+3            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+4         Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+5          Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+6            Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+7             Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+8        Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+9  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+10          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+11   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+12          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+13  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+14          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+15             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+16       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+17    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+18         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+19          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+20          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+21           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+22            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+23            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+24       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+25           Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+26   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+27      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+28      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+29        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+30    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+31          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+32         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+   mpg_category wt_category mpg_per_cyl Manual
+1          high       Light        8.47   TRUE
+2          high       Light        6.50   TRUE
+3          high      Medium        6.10  FALSE
+4          high       Light        7.60   TRUE
+5          high       Light        7.60   TRUE
+6          high       Light        6.82   TRUE
+7          high       Light        8.10   TRUE
+8           low      Medium        1.88   TRUE
+9           low       Heavy        1.30  FALSE
+10          low      Medium        1.79  FALSE
+11          low       Heavy        1.84  FALSE
+12          low       Heavy        1.66  FALSE
+13          low       Heavy        1.30  FALSE
+14       medium      Medium        5.35   TRUE
+15       medium      Medium        3.02  FALSE
+16       medium       Light        5.38  FALSE
+17       medium       Heavy        2.40  FALSE
+18       medium       Heavy        1.90  FALSE
+19       medium       Heavy        2.16  FALSE
+20       medium       Heavy        2.05  FALSE
+21       medium      Medium        2.97  FALSE
+22       medium      Medium        3.20  FALSE
+23       medium      Medium        5.70  FALSE
+24       medium      Medium        3.50   TRUE
+25       medium      Medium        3.50   TRUE
+26       medium      Medium        2.34  FALSE
+27       medium      Medium        3.57  FALSE
+28       medium      Medium        1.98   TRUE
+29       medium      Medium        3.28   TRUE
+30       medium      Medium        1.94  FALSE
+31       medium       Light        5.70   TRUE
+32       medium      Medium        1.90  FALSE</code></pre>
 </div>
 </div>
 <ol start="7" type="1">
@@ -1692,11 +1688,100 @@ Valiant                        3.46012171370017             17.5</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Referring to this post https://stackoverflow.com/questions/62006325/export-r-data-to-csv </span></span>
 <span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="co">#the command line is simple and is similar to python , which I am familiar with</span></span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="co">#let me first get to know the arguments of this line </span></span>
-<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>?write.csv</span>
-<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a><span class="co">#so the reaosn why we have to set the row.names=FALSE is because originally it's set as TRUE , and we do not necessarily want that for this csv. </span></span>
-<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(clean.mtcars,<span class="st">"/Users/abdulaziz/Desktop/University of Chicago/clean-mtcars.csv"</span>,<span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="co">#let me first get to know the arguments of this line </span></span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>?write.csv</span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>?read.csv <span class="co">#both of these functions won't suffice in retaining the data types</span></span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a><span class="co">#using the readr functions (write_csv,read_csv), it should automatically retain the data types</span></span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(clean.mtcars,<span class="st">"/Users/abdulaziz/Desktop/University of Chicago/clean-mtcars.csv"</span>)</span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>clean.mtcars.csv<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"/Users/abdulaziz/Desktop/University of Chicago/clean-mtcars.csv"</span>,<span class="at">col_types=</span><span class="fu">cols</span>(<span class="at">wt_category=</span><span class="fu">col_factor</span>())) <span class="co">#wt_category ought to be specified as factorß</span></span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1       Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+2        Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+3            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+4         Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+5          Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+6            Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+7             Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+8        Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+9  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+10          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+11   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+12          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+13  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+14          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+15             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+16       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+17    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+18         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+19          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+20          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+21           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+22            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+23            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+24       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+25           Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+26   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+27      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+28      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+29        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+30    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+31          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+32         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+   mpg_category wt_category mpg_per_cyl Manual
+1          high       Light        8.47   TRUE
+2          high       Light        6.50   TRUE
+3          high      Medium        6.10  FALSE
+4          high       Light        7.60   TRUE
+5          high       Light        7.60   TRUE
+6          high       Light        6.82   TRUE
+7          high       Light        8.10   TRUE
+8           low      Medium        1.88   TRUE
+9           low       Heavy        1.30  FALSE
+10          low      Medium        1.79  FALSE
+11          low       Heavy        1.84  FALSE
+12          low       Heavy        1.66  FALSE
+13          low       Heavy        1.30  FALSE
+14       medium      Medium        5.35   TRUE
+15       medium      Medium        3.02  FALSE
+16       medium       Light        5.38  FALSE
+17       medium       Heavy        2.40  FALSE
+18       medium       Heavy        1.90  FALSE
+19       medium       Heavy        2.16  FALSE
+20       medium       Heavy        2.05  FALSE
+21       medium      Medium        2.97  FALSE
+22       medium      Medium        3.20  FALSE
+23       medium      Medium        5.70  FALSE
+24       medium      Medium        3.50   TRUE
+25       medium      Medium        3.50   TRUE
+26       medium      Medium        2.34  FALSE
+27       medium      Medium        3.57  FALSE
+28       medium      Medium        1.98   TRUE
+29       medium      Medium        3.28   TRUE
+30       medium      Medium        1.94  FALSE
+31       medium       Light        5.70   TRUE
+32       medium      Medium        1.90  FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>clean.mtcars.csv </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 32 × 16
+   model         mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+   &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 Toyota Cor…  33.9     4  71.1    65  4.22  1.84  19.9     1     1     4     1
+ 2 Porsche 91…  26       4 120.     91  4.43  2.14  16.7     0     1     5     2
+ 3 Merc 240D    24.4     4 147.     62  3.69  3.19  20       1     0     4     2
+ 4 Lotus Euro…  30.4     4  95.1   113  3.77  1.51  16.9     1     1     5     2
+ 5 Honda Civic  30.4     4  75.7    52  4.93  1.62  18.5     1     1     4     2
+ 6 Fiat X1-9    27.3     4  79      66  4.08  1.94  18.9     1     1     4     1
+ 7 Fiat 128     32.4     4  78.7    66  4.08  2.2   19.5     1     1     4     1
+ 8 Maserati B…  15       8 301     335  3.54  3.57  14.6     0     1     5     8
+ 9 Lincoln Co…  10.4     8 460     215  3     5.42  17.8     0     0     3     4
+10 Duster 360   14.3     8 360     245  3.21  3.57  15.8     0     0     3     4
+# ℹ 22 more rows
+# ℹ 4 more variables: mpg_category &lt;chr&gt;, wt_category &lt;fct&gt;, mpg_per_cyl &lt;dbl&gt;,
+#   Manual &lt;lgl&gt;</code></pre>
+</div>
 </div>
 </section>
 <section id="unguided-cleaning-and-transformation" class="level2">
@@ -1711,107 +1796,108 @@ Valiant                        3.46012171370017             17.5</code></pre>
 <h3 class="anchored" data-anchor-id="step-1-create-the-make-column">STEP 1: Create the Make Column</h3>
 <p>Let’s demonstrate how we can create a new column and use the StringR library to extract the first word in the model column (which is usually the make of the car)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co">#I used this regex cheat sheet from gitlab:https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf</span></span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="co">#I will create a new column and save the first word in the model to it </span></span>
-<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Since there are no whitespaces before the first word, I am telling the code to detect the first whitespace, I am telling the code to EXTRACT EVERYTHING BEFORE THE FIRST SPACE </span></span>
-<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Make=</span> <span class="fu">str_extract</span>(model,<span class="st">"^[^</span><span class="sc">\\</span><span class="st">s]+"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co">#I used this regex cheat sheet from gitlab:https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf</span></span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a><span class="co">#I will create a new column and save the first word in the model to it </span></span>
+<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr) <span class="co">#the stringr library allows me to manipulate regex and text </span></span>
+<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Since there are no whitespaces before the first word, I am telling the code to detect the first whitespace, I am telling the code to EXTRACT EVERYTHING BEFORE THE FIRST SPACE </span></span>
+<span id="cb96-6"><a href="#cb96-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-7"><a href="#cb96-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-8"><a href="#cb96-8" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Make=</span> <span class="fu">str_extract</span>(model,<span class="st">"^[^</span><span class="sc">\\</span><span class="st">s]+"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-2-create-the-country-column" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-create-the-country-column">STEP 2: Create the Country Column</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co">#STEP 2: I will use my car knowledge (and wikipedia) and the case_when function to sort them ,</span></span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Country=</span><span class="fu">case_when</span>(Make<span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Toyota"</span>,<span class="st">"Honda"</span>,<span class="st">"Mazda"</span>,<span class="st">"Datsun"</span>) <span class="sc">~</span><span class="st">"Japan"</span>,</span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Porsche"</span>,<span class="st">"Merc"</span>)<span class="sc">~</span><span class="st">"Germany"</span>,<span class="co">#using %in% allows for an OR logic in case_when</span></span>
-<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">==</span><span class="st">"Lotus"</span><span class="sc">~</span><span class="st">"United Kingdom"</span>,</span>
-<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">%in%</span>         <span class="fu">c</span>(<span class="st">"Lincoln"</span>,<span class="st">"Duster"</span>,<span class="st">"Pontiac"</span>,<span class="st">"Chrysler"</span>,<span class="st">"Camaro"</span>,<span class="st">"Cadillac"</span>,<span class="st">"AMC"</span>,<span class="st">"Dodge"</span>,<span class="st">"Ford"</span>,<span class="st">"Hornet"</span>,<span class="st">"Valiant"</span>)<span class="sc">~</span><span class="st">"USA"</span>, </span>
-<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">==</span><span class="st">"Volvo"</span><span class="sc">~</span><span class="st">"Sweden"</span>,</span>
-<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Ferrari"</span>,<span class="st">"Fiat"</span>,<span class="st">"Maserati"</span>)<span class="sc">~</span><span class="st">"Italy"</span>))</span>
-<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co">#STEP 2: I will use my car knowledge (and wikipedia) and the case_when function to sort them ,</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Country=</span><span class="fu">case_when</span>(Make<span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Toyota"</span>,<span class="st">"Honda"</span>,<span class="st">"Mazda"</span>,<span class="st">"Datsun"</span>) <span class="sc">~</span><span class="st">"Japan"</span>,</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Porsche"</span>,<span class="st">"Merc"</span>)<span class="sc">~</span><span class="st">"Germany"</span>,<span class="co">#using %in% allows for an OR logic in case_when</span></span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">==</span><span class="st">"Lotus"</span><span class="sc">~</span><span class="st">"United Kingdom"</span>,</span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">%in%</span>         <span class="fu">c</span>(<span class="st">"Lincoln"</span>,<span class="st">"Duster"</span>,<span class="st">"Pontiac"</span>,<span class="st">"Chrysler"</span>,<span class="st">"Camaro"</span>,<span class="st">"Cadillac"</span>,<span class="st">"AMC"</span>,<span class="st">"Dodge"</span>,<span class="st">"Ford"</span>,<span class="st">"Hornet"</span>,<span class="st">"Valiant"</span>)<span class="sc">~</span><span class="st">"USA"</span>, </span>
+<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">==</span><span class="st">"Volvo"</span><span class="sc">~</span><span class="st">"Sweden"</span>,</span>
+<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a>  Make<span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Ferrari"</span>,<span class="st">"Fiat"</span>,<span class="st">"Maserati"</span>)<span class="sc">~</span><span class="st">"Italy"</span>))</span>
+<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-10"><a href="#cb97-10" aria-hidden="true" tabindex="-1"></a>clean.mtcars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs manual? gear carb
-1       Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1    TRUE    4    1
-2        Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0    TRUE    5    2
-3            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1   FALSE    4    2
-4         Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1    TRUE    5    2
-5          Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1    TRUE    4    2
-6            Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1    TRUE    4    1
-7             Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1    TRUE    4    1
-8        Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0    TRUE    5    8
-9  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0   FALSE    3    4
-10          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0   FALSE    3    4
-11   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0   FALSE    3    4
-12          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0   FALSE    3    4
-13  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0   FALSE    3    4
-14          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1    TRUE    4    2
-15             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1   FALSE    3    1
-16       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1   FALSE    3    1
-17    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0   FALSE    3    2
-18         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0   FALSE    3    3
-19          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0   FALSE    3    3
-20          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0   FALSE    3    3
-21           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1   FALSE    4    4
-22            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1   FALSE    4    4
-23            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1   FALSE    4    2
-24       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0    TRUE    4    4
-25           Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0    TRUE    4    4
-26   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0   FALSE    3    2
-27      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1   FALSE    3    1
-28      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0    TRUE    5    4
-29        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0    TRUE    5    6
-30    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0   FALSE    3    2
-31          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1    TRUE    4    1
-32         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0   FALSE    3    2
-   mpg_category wt_category mpg_per_cyl     Make        Country
-1          high       Light        8.47   Toyota          Japan
-2          high       Light        6.50  Porsche        Germany
-3          high      Medium        6.10     Merc        Germany
-4          high       Light        7.60    Lotus United Kingdom
-5          high       Light        7.60    Honda          Japan
-6          high       Light        6.82     Fiat          Italy
-7          high       Light        8.10     Fiat          Italy
-8           low      Medium        1.88 Maserati          Italy
-9           low       Heavy        1.30  Lincoln            USA
-10          low      Medium        1.79   Duster            USA
-11          low       Heavy        1.84 Chrysler            USA
-12          low       Heavy        1.66   Camaro            USA
-13          low       Heavy        1.30 Cadillac            USA
-14       medium      Medium        5.35    Volvo         Sweden
-15       medium      Medium        3.02  Valiant            USA
-16       medium       Light        5.38   Toyota          Japan
-17       medium       Heavy        2.40  Pontiac            USA
-18       medium       Heavy        1.90     Merc        Germany
-19       medium       Heavy        2.16     Merc        Germany
-20       medium       Heavy        2.05     Merc        Germany
-21       medium      Medium        2.97     Merc        Germany
-22       medium      Medium        3.20     Merc        Germany
-23       medium      Medium        5.70     Merc        Germany
-24       medium      Medium        3.50    Mazda          Japan
-25       medium      Medium        3.50    Mazda          Japan
-26       medium      Medium        2.34   Hornet            USA
-27       medium      Medium        3.57   Hornet            USA
-28       medium      Medium        1.98     Ford            USA
-29       medium      Medium        3.28  Ferrari          Italy
-30       medium      Medium        1.94    Dodge            USA
-31       medium       Light        5.70   Datsun          Japan
-32       medium      Medium        1.90      AMC            USA</code></pre>
+<pre><code>                 model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1       Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+2        Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+3            Merc 240D 24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+4         Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+5          Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+6            Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+7             Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+8        Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
+9  Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4
+10          Duster 360 14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+11   Chrysler Imperial 14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4
+12          Camaro Z28 13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4
+13  Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+14          Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+15             Valiant 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+16       Toyota Corona 21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+17    Pontiac Firebird 19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2
+18         Merc 450SLC 15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+19          Merc 450SL 17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+20          Merc 450SE 16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+21           Merc 280C 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+22            Merc 280 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+23            Merc 230 22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+24       Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+25           Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+26   Hornet Sportabout 18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+27      Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+28      Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4
+29        Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
+30    Dodge Challenger 15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2
+31          Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+32         AMC Javelin 15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2
+   mpg_category wt_category mpg_per_cyl Manual     Make        Country
+1          high       Light        8.47   TRUE   Toyota          Japan
+2          high       Light        6.50   TRUE  Porsche        Germany
+3          high      Medium        6.10  FALSE     Merc        Germany
+4          high       Light        7.60   TRUE    Lotus United Kingdom
+5          high       Light        7.60   TRUE    Honda          Japan
+6          high       Light        6.82   TRUE     Fiat          Italy
+7          high       Light        8.10   TRUE     Fiat          Italy
+8           low      Medium        1.88   TRUE Maserati          Italy
+9           low       Heavy        1.30  FALSE  Lincoln            USA
+10          low      Medium        1.79  FALSE   Duster            USA
+11          low       Heavy        1.84  FALSE Chrysler            USA
+12          low       Heavy        1.66  FALSE   Camaro            USA
+13          low       Heavy        1.30  FALSE Cadillac            USA
+14       medium      Medium        5.35   TRUE    Volvo         Sweden
+15       medium      Medium        3.02  FALSE  Valiant            USA
+16       medium       Light        5.38  FALSE   Toyota          Japan
+17       medium       Heavy        2.40  FALSE  Pontiac            USA
+18       medium       Heavy        1.90  FALSE     Merc        Germany
+19       medium       Heavy        2.16  FALSE     Merc        Germany
+20       medium       Heavy        2.05  FALSE     Merc        Germany
+21       medium      Medium        2.97  FALSE     Merc        Germany
+22       medium      Medium        3.20  FALSE     Merc        Germany
+23       medium      Medium        5.70  FALSE     Merc        Germany
+24       medium      Medium        3.50   TRUE    Mazda          Japan
+25       medium      Medium        3.50   TRUE    Mazda          Japan
+26       medium      Medium        2.34  FALSE   Hornet            USA
+27       medium      Medium        3.57  FALSE   Hornet            USA
+28       medium      Medium        1.98   TRUE     Ford            USA
+29       medium      Medium        3.28   TRUE  Ferrari          Italy
+30       medium      Medium        1.94  FALSE    Dodge            USA
+31       medium       Light        5.70   TRUE   Datsun          Japan
+32       medium      Medium        1.90  FALSE      AMC            USA</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co">#success !</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co">#success !</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-3-basic-descriptive-statistics" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-basic-descriptive-statistics">STEP 3: Basic Descriptive Statistics</h3>
-<p>Now that we have successfully added two new columns (Make and Country), we can establish some basic descriptive statistics</p>
+<p>Now that we have successfully added two new columns (Make and Country), we can establish some basic descriptive statistics using arranged tables</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co">#let's arrange the countries by the aggregate weight of their cars</span></span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>Weight.by.country<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Country) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Average.Weight=</span><span class="fu">round</span>(<span class="fu">mean</span>(wt,<span class="at">na.rm=</span><span class="cn">TRUE</span>),<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Average.Weight))</span>
-<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Weight.by.country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co">#let's arrange the countries by the aggregate weight of their cars</span></span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>Weight.by.country<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Country) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Average.Weight=</span><span class="fu">round</span>(<span class="fu">mean</span>(wt,<span class="at">na.rm=</span><span class="cn">TRUE</span>),<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Average.Weight))</span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Weight.by.country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 2
   Country        Average.Weight
@@ -1823,11 +1909,11 @@ Valiant                        3.46012171370017             17.5</code></pre>
 5 Japan                    2.29
 6 United Kingdom           1.51</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co">#now let's arrange them by horsepower (hypothesis: US will have the highest cuz 'MURICA)</span></span>
-<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>Hp.by.country<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">group_by</span>(Country)<span class="sc">%&gt;%</span><span class="fu">summarize</span>(<span class="at">Average.Horsepower=</span><span class="fu">round</span>(<span class="fu">mean</span>(hp,<span class="at">na.rm=</span><span class="cn">TRUE</span>),<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Average.Horsepower))</span>
-<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Hp.by.country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co">#now let's arrange them by horsepower (hypothesis: US will have the highest cuz 'MURICA)</span></span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>Hp.by.country<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">group_by</span>(Country)<span class="sc">%&gt;%</span><span class="fu">summarize</span>(<span class="at">Average.Horsepower=</span><span class="fu">round</span>(<span class="fu">mean</span>(hp,<span class="at">na.rm=</span><span class="cn">TRUE</span>),<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Average.Horsepower))</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Hp.by.country)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 2
   Country        Average.Horsepower
@@ -1839,34 +1925,237 @@ Valiant                        3.46012171370017             17.5</code></pre>
 5 Sweden                      109  
 6 Japan                        87.8</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co">#p-value equals MURRICCCAA</span></span>
-<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="co">#ok now let's see horsepower distributed by weight aggregated for all countries</span></span>
-<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>Horsepower.by.Weight<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">hppwt=</span><span class="fu">round</span>(hp<span class="sc">/</span>wt,<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">group_by</span>(Country)<span class="sc">%&gt;%</span><span class="fu">summarize</span>(<span class="at">Average.HorsepowerbyWeight=</span><span class="fu">round</span>(<span class="fu">mean</span>(hppwt),<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Average.HorsepowerbyWeight))</span>
-<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Horsepower.by.Weight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Let's test this mini hypothesis: USA cars usually outrank other countries in terms of average horsepower</span></span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(Hp.by.country[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">==</span><span class="st">"USA"</span>) {</span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"USA scored first in Average Horsepower ranking "</span>) </span>
+<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"USA did not rank first in Average Horsepower ranking"</span>)</span>
+<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "USA scored first in Average Horsepower ranking "</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ok now let's see horsepower distributed by weight aggregated for all countries</span></span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>Horsepower.by.Weight<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">hppwt=</span><span class="fu">round</span>(hp<span class="sc">/</span>wt,<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">group_by</span>(Country)<span class="sc">%&gt;%</span><span class="fu">summarize</span>(<span class="at">HpbW=</span><span class="fu">round</span>(<span class="fu">mean</span>(hppwt),<span class="dv">2</span>))<span class="sc">%&gt;%</span><span class="fu">arrange</span>(<span class="fu">desc</span>(HpbW))</span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Horsepower.by.Weight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 2
-  Country        Average.HorsepowerbyWeight
-  &lt;chr&gt;                               &lt;dbl&gt;
-1 United Kingdom                       74.7
-2 Italy                                55.3
-3 USA                                  48.7
-4 Sweden                               39.2
-5 Germany                              38.0
-6 Japan                                37.9</code></pre>
+  Country         HpbW
+  &lt;chr&gt;          &lt;dbl&gt;
+1 United Kingdom  74.7
+2 Italy           55.3
+3 USA             48.7
+4 Sweden          39.2
+5 Germany         38.0
+6 Japan           37.9</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="sc">$</span>Make<span class="ot">=</span><span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">s.*"</span>,<span class="st">""</span>,clean.mtcars<span class="sc">$</span>model)</span>
-<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="co">#USA came in third. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Let's see how the U.S did in this ranking</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="co">#since the table above is ordered descending in terms of Horsepower by Weight,the rank is simple the number of rows at a certain point. </span></span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>USA_rank<span class="ot">&lt;-</span>Horsepower.by.Weight<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Rank=</span><span class="fu">row_number</span>())<span class="sc">%&gt;%</span><span class="fu">filter</span>(Country<span class="sc">==</span><span class="st">"USA"</span>)<span class="sc">%&gt;%</span><span class="fu">pull</span>(Rank)</span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">"The USA's rank in horsepower/weight is: "</span>,USA_rank)<span class="co">#paste makes it easier to mix strings and numberic variables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "The USA's rank in horsepower/weight is:  3"</code></pre>
 </div>
+</div>
+</section>
+<section id="step-4-create-descriptive-plots-and-figures" class="level3">
+<h3 class="anchored" data-anchor-id="step-4-create-descriptive-plots-and-figures">STEP 4: Create descriptive plots and figures</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="co">#The packages ggplot2 and ggpattern will allows to maximally customize our plots and figures. </span></span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpattern)</span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-6"><a href="#cb110-6" aria-hidden="true" tabindex="-1"></a><span class="co">#We will start with the one of the tables created for Average Horsepower/Weight for each country</span></span>
+<span id="cb110-7"><a href="#cb110-7" aria-hidden="true" tabindex="-1"></a><span class="co">#this line below is the setup for the plot , but not the plot itself </span></span>
+<span id="cb110-8"><a href="#cb110-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Horsepower.by.Weight, <span class="fu">aes</span>(<span class="at">x =</span> Country, <span class="at">y =</span> HpbW, <span class="at">fill =</span> Country)) <span class="sc">+</span> <span class="co">#I want each country to have its own color, thus the fill = Country argument</span></span>
+<span id="cb110-9"><a href="#cb110-9" aria-hidden="true" tabindex="-1"></a>           <span class="fu">geom_col</span>(<span class="at">color=</span><span class="st">"black"</span>, <span class="co">#setting the borders of the bars as black</span></span>
+<span id="cb110-10"><a href="#cb110-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">width=</span><span class="fl">0.7</span>)<span class="sc">+</span> <span class="co">#the width of each bar set to have a width of .7</span></span>
+<span id="cb110-11"><a href="#cb110-11" aria-hidden="true" tabindex="-1"></a>           <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Figure 1: Horsepower By Weight distribution through Countries"</span>,</span>
+<span id="cb110-12"><a href="#cb110-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">"Country"</span>,<span class="at">y=</span><span class="st">"Horsepower/Weight(hp/1000lbs)"</span>)<span class="sc">+</span></span>
+<span id="cb110-13"><a href="#cb110-13" aria-hidden="true" tabindex="-1"></a>           <span class="co">#makes the x-labels rotated, hjust adjusts it horizontally</span></span>
+<span id="cb110-14"><a href="#cb110-14" aria-hidden="true" tabindex="-1"></a>           <span class="fu">theme</span>(<span class="at">plot.title=</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>,<span class="at">face=</span><span class="st">"bold"</span>,<span class="at">hjust=</span><span class="fl">0.5</span>),<span class="co">#centered title and adjusts font</span></span>
+<span id="cb110-15"><a href="#cb110-15" aria-hidden="true" tabindex="-1"></a>                 <span class="at">axis.title.x=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>,<span class="at">face=</span><span class="st">"italic"</span>),<span class="co">#adjust font for x-axis label</span></span>
+<span id="cb110-16"><a href="#cb110-16" aria-hidden="true" tabindex="-1"></a>                 <span class="at">axis.title.y=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>,<span class="at">face=</span><span class="st">"italic"</span>),<span class="co">#adjust font for y-axis label</span></span>
+<span id="cb110-17"><a href="#cb110-17" aria-hidden="true" tabindex="-1"></a>           )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="cleaning-level-1_files/figure-html/miniproject1-unguided-additional-descriptive_visualization-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="step-5-hypothesis-testing-and-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="step-5-hypothesis-testing-and-visualization">STEP 5: Hypothesis testing and visualization</h3>
+<section id="establishing-a-hypothesis-and-a-test-linear-mixed-effects-regression-test" class="level5">
+<h5 class="anchored" data-anchor-id="establishing-a-hypothesis-and-a-test-linear-mixed-effects-regression-test">5.1 Establishing a Hypothesis and a test (Linear Mixed Effects Regression Test)</h5>
+<p>With the data available after cleaning, we can now come up with a hypothesis by inspecting the data, and testing our hypothesis statistically.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="co"># My hypothesis is that cars with higher weight will have lower mpg </span></span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="co">#in linear regression terms, weight (wt) is a negative coefficient of mpg </span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>H1.test<span class="ot">&lt;-</span><span class="fu">lm</span>(mpg<span class="sc">~</span>wt, <span class="at">data=</span>clean.mtcars) <span class="co">#built-in stats package uses lm() as linear regression</span></span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(H1.test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = mpg ~ wt, data = clean.mtcars)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.5432 -2.3647 -0.1252  1.4096  6.8727 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  37.2851     1.8776  19.858  &lt; 2e-16 ***
+wt           -5.3445     0.5591  -9.559 1.29e-10 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.046 on 30 degrees of freedom
+Multiple R-squared:  0.7528,    Adjusted R-squared:  0.7446 
+F-statistic: 91.38 on 1 and 30 DF,  p-value: 1.294e-10</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Results are indeed significant and the coefficient is negative</span></span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Let's include another variable , horsepower, as a predictor for mpg (hypothesis: it is a negative predictor)</span></span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>H2.test<span class="ot">&lt;-</span><span class="fu">lm</span>(mpg<span class="sc">~</span>wt<span class="sc">+</span>hp,<span class="at">data=</span>clean.mtcars)</span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(H2.test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = mpg ~ wt + hp, data = clean.mtcars)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.941 -1.600 -0.182  1.050  5.854 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 37.22727    1.59879  23.285  &lt; 2e-16 ***
+wt          -3.87783    0.63273  -6.129 1.12e-06 ***
+hp          -0.03177    0.00903  -3.519  0.00145 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.593 on 29 degrees of freedom
+Multiple R-squared:  0.8268,    Adjusted R-squared:  0.8148 
+F-statistic: 69.21 on 2 and 29 DF,  p-value: 9.109e-12</code></pre>
+</div>
+</div>
+<p>#####Horsepower is a significant negative predictor but with a minimal effect #### 5.2 Generating Inferential Plot for Linear Mixed Effects Regression</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean.mtcars,<span class="fu">aes</span>(<span class="at">x=</span>hp,<span class="at">y=</span>mpg))<span class="sc">+</span></span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span> <span class="co">#Scatterplot "points"</span></span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">TRUE</span>,<span class="co">#regression line with shaded region (se=TRUE)</span></span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">formula=</span>y<span class="sc">~</span>x,<span class="at">color=</span><span class="st">"red"</span> ) <span class="sc">+</span></span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"Figure 2: Regression of MpG on Horsepower"</span>,</span>
+<span id="cb115-7"><a href="#cb115-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">"Horsepower(hp)"</span>,</span>
+<span id="cb115-8"><a href="#cb115-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Miles per Gallon (mpg)"</span></span>
+<span id="cb115-9"><a href="#cb115-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb115-10"><a href="#cb115-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb115-11"><a href="#cb115-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"white"</span>),<span class="co">#background color set to white</span></span>
+<span id="cb115-12"><a href="#cb115-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major=</span><span class="fu">element_line</span>(<span class="at">color=</span><span class="st">"gray"</span>),<span class="co">#setting the grid lines to be gray on the white background</span></span>
+<span id="cb115-13"><a href="#cb115-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor=</span><span class="fu">element_line</span>(<span class="at">color=</span><span class="st">"gray"</span>),</span>
+<span id="cb115-14"><a href="#cb115-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>,<span class="at">face=</span><span class="st">"bold"</span>,<span class="at">hjust=</span><span class="fl">0.5</span>), <span class="co">#centered title and adjusted font</span></span>
+<span id="cb115-15"><a href="#cb115-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>,<span class="at">face=</span><span class="st">"italic"</span>), <span class="co">#adjusted font for x-axis</span></span>
+<span id="cb115-16"><a href="#cb115-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>,<span class="at">face=</span><span class="st">"italic"</span>) <span class="co">#adjusted font for y-axis</span></span>
+<span id="cb115-17"><a href="#cb115-17" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="cleaning-level-1_files/figure-html/miniproject1-unguided-additional-Hypothesis,lm-visualization-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="establishing-a-hypothesis-and-a-test-anova-test" class="level5">
+<h5 class="anchored" data-anchor-id="establishing-a-hypothesis-and-a-test-anova-test">5.3 Establishing a Hypothesis and a test (ANOVA test)</h5>
+<section id="lets-say-i-want-to-test-how-different-transmision-types-automatic-v.-manual-affect-miles-per-gallon-so-my-hypothesis-is-that-on-average-the-automatic-transmission-will-have-a-lower-mpg-than-the-manual" class="level6">
+<h6 class="anchored" data-anchor-id="lets-say-i-want-to-test-how-different-transmision-types-automatic-v.-manual-affect-miles-per-gallon-so-my-hypothesis-is-that-on-average-the-automatic-transmission-will-have-a-lower-mpg-than-the-manual">Let’s say I want to test how different transmision types (automatic v. manual) affect miles per gallon, so my hypothesis is that on average, the automatic transmission will have a lower mpg than the manual</h6>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="co">#to represent the factors clearly, I am adding a column that indicates automatic or manual as per the am column</span></span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>clean.mtcars<span class="ot">&lt;-</span>clean.mtcars<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">Transmission =</span> <span class="fu">factor</span>(<span class="fu">case_when</span>(am <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"Automatic"</span>,am <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span><span class="st">"Manual"</span>)))</span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a><span class="co">#running the anova test of how mpg is affected by transmission</span></span>
+<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>anova_test<span class="ot">&lt;-</span><span class="fu">aov</span>(mpg<span class="sc">~</span><span class="fu">factor</span>(Transmission),<span class="at">data=</span>clean.mtcars)</span>
+<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova_test) <span class="co">#prints out the ANOVA test results</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+factor(Transmission)  1  405.2   405.2   16.86 0.000285 ***
+Residuals            30  720.9    24.0                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="generating-inferential-plot-for-anova-model" class="level5">
+<h5 class="anchored" data-anchor-id="generating-inferential-plot-for-anova-model">5.4 Generating Inferential Plot for ANOVA model</h5>
+<section id="now-that-we-know-that-transmission-is-a-statistically-significant-factor-in-mpg-p0.001-lets-visualize-these-results-with-a-violin-plot" class="level6">
+<h6 class="anchored" data-anchor-id="now-that-we-know-that-transmission-is-a-statistically-significant-factor-in-mpg-p0.001-lets-visualize-these-results-with-a-violin-plot">Now that we know that transmission is a statistically significant factor in mpg (p&lt;0.001), let’s visualize these results with a violin plot</h6>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean.mtcars,<span class="fu">aes</span>(<span class="at">x=</span>Transmission,<span class="at">y=</span>mpg,<span class="at">fill=</span>Transmission))<span class="sc">+</span></span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim=</span><span class="cn">FALSE</span>,<span class="at">alpha=</span><span class="fl">0.8</span>) <span class="sc">+</span> <span class="co">#80% opacity used for the violin plot,Trim deactivated for smoother ends</span></span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun=</span> mean, <span class="at">geom=</span><span class="st">"crossbar"</span>,<span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> <span class="co"># adding a line to the mean to ease the comparison</span></span>
+<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"Figure 3: Comparing Transmission Types effect on Miles per Gallon"</span>,</span>
+<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">"Transmission Type"</span>,</span>
+<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Miles per Gallon(mpg)"</span></span>
+<span id="cb118-8"><a href="#cb118-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb118-9"><a href="#cb118-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb118-10"><a href="#cb118-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">panel.background=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"white"</span>),<span class="co">#background color set to white</span></span>
+<span id="cb118-11"><a href="#cb118-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major=</span><span class="fu">element_line</span>(<span class="at">color=</span><span class="st">"gray"</span>),<span class="co">#setting the grid lines to be gray on the white background</span></span>
+<span id="cb118-12"><a href="#cb118-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor=</span><span class="fu">element_line</span>(<span class="at">color=</span><span class="st">"gray"</span>),</span>
+<span id="cb118-13"><a href="#cb118-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>,<span class="at">face=</span><span class="st">"bold"</span>,<span class="at">hjust=</span><span class="fl">0.5</span>), <span class="co">#centered title and adjusted font</span></span>
+<span id="cb118-14"><a href="#cb118-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>,<span class="at">face=</span><span class="st">"italic"</span>), <span class="co">#adjusted font for x-axis</span></span>
+<span id="cb118-15"><a href="#cb118-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>,<span class="at">face=</span><span class="st">"italic"</span>) <span class="co">#adjusted font for y-axis</span></span>
+<span id="cb118-16"><a href="#cb118-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="cleaning-level-1_files/figure-html/miniproject1-unguided-additional-Hypothesis,anova-visualization-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="multivariate-plot" class="level5">
+<h5 class="anchored" data-anchor-id="multivariate-plot">5.5 Multivariate Plot</h5>
+<section id="lets-see-if-we-can-add-the-number-of-cylindersas-well-number-of-gears-as-a-color-and-shape-modulators-when-comparing-between-horsepower-and-mpg" class="level6">
+<h6 class="anchored" data-anchor-id="lets-see-if-we-can-add-the-number-of-cylindersas-well-number-of-gears-as-a-color-and-shape-modulators-when-comparing-between-horsepower-and-mpg">Let’s see if we can add the number of cylinders,as well number of gears as a color and shape modulators when comparing between Horsepower and MpG</h6>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean.mtcars,<span class="fu">aes</span>(<span class="at">x=</span>hp,<span class="at">y=</span>mpg,<span class="at">color=</span><span class="fu">factor</span>(cyl),<span class="at">shape=</span><span class="fu">factor</span>(gear))) <span class="sc">+</span> <span class="co">#cylinders is colors, no.gears is shape</span></span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span> <span class="co">#scatterplot with size 3 data points</span></span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Figure 4: Horsepower v. Miles/Gallon with Gears and Cylinders "</span>,<span class="at">x=</span><span class="st">"Horsepower(hp)"</span>,<span class="at">y=</span><span class="st">"Miles per Gallon (mpg)"</span>,<span class="at">color =</span> <span class="st">"Number of Cylinders"</span>,<span class="at">shape=</span><span class="st">"Number of Forward Gears"</span>)<span class="sc">+</span></span>
+<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb119-5"><a href="#cb119-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background=</span><span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"white"</span>),<span class="co">#background white </span></span>
+<span id="cb119-6"><a href="#cb119-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major=</span><span class="fu">element_line</span>(<span class="at">color=</span><span class="st">"black"</span>),<span class="co">#gridlines are black</span></span>
+<span id="cb119-7"><a href="#cb119-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor=</span><span class="fu">element_line</span>(<span class="at">color=</span><span class="st">"black"</span>),</span>
+<span id="cb119-8"><a href="#cb119-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>,<span class="at">face=</span><span class="st">"bold"</span>,<span class="at">hjust=</span><span class="fl">0.5</span>), <span class="co">#centered title and adjusted font</span></span>
+<span id="cb119-9"><a href="#cb119-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>,<span class="at">face=</span><span class="st">"italic"</span>), <span class="co">#adjusted font for x-axis</span></span>
+<span id="cb119-10"><a href="#cb119-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>,<span class="at">face=</span><span class="st">"italic"</span>) <span class="co">#adjusted font for y-axis</span></span>
+<span id="cb119-11"><a href="#cb119-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="cleaning-level-1_files/figure-html/miniproject1-unguided-additional-Hypothesis,Multivariate%20Plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
 </section>
 </section>
 <section id="submission-assessment" class="level1">
 <h1>Submission &amp; Assessment</h1>
 <p>To submit:</p>
 <ol type="1">
-<li>Modify the <code>assessment.md</code> in this mini-project’s directory:
+<li>Add &amp; modify the <code>assessment.md</code> in this mini-project’s directory:
 <ol type="1">
 <li>Check off all objectives you believe you have demonstrated</li>
 <li>Indicate which objectives you are meeting for the first time (if any)</li>
@@ -1876,7 +2165,7 @@ Valiant                        3.46012171370017             17.5</code></pre>
 <li>Confirm that Dr.&nbsp;Dowling and your section TA are added as collaborators to your repository.</li>
 <li>Submit your work in your next open mini-project assignment by including the following information in the text box:
 <ol type="1">
-<li>The title of the assignment: “Assignment: Clean the mtcars Dataset (Level 1)”</li>
+<li>The title of the assignment: “Level 1 Data Cleaning: Clean the mtcars Dataset”</li>
 <li>A link to the <strong>directory</strong> for this assignment in your centralized assignment repo</li>
 </ol></li>
 </ol>

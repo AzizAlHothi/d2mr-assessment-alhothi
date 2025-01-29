@@ -11,17 +11,17 @@
 
 ## Basic information
 
-Name:
+Name: Abdulaziz AlHothi
 
-CNetID:
+CNetID: alhothi@uchicago.edu
 
-Section:
+Section: section 1
 
-Mini-project title:
+Mini-project title:cleaning-level-1
 
-Submission date:
+Submission date: 2025-27-01
 
-Project GitHub subdirectory URL:
+Project GitHub subdirectory URL: https://github.com/AzizAlHothi/d2mr-assessment-alhothi
 
 URL or instructions to access additional materials, if needed:
 
@@ -94,8 +94,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. No errors occur when running scripts in a new environment and/or comments sufficiently explain package installation requirements
     2. Uses more than one function to install/load/require packages
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -104,8 +104,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. Uses all three types of operators
     2. Uses multiple operators in data transformation pipelines and/or inline R code
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -125,8 +125,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. Uses conditional in multiple contexts, including dplyr pipelines
     2. Uses multiple types of conditional/loop functions (e.g., `if_else()`, `case_when()`, `for`, `while`)
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -137,8 +137,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. Reads in data from at least one source in code chunk or sourced script
     2. Writes out intermediate and/or final datasets in code chunks or sourced scripts
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -148,8 +148,8 @@ Below each learning objective is a list of general expectations for meeting that
     2. Uses at least 1 `tidyr` function in a data transformation pipeline
     3. Combines `dplyr` and `tidyr` functions in a data transformation pipeline
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -158,8 +158,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. Uses ate least 2 unique `stringr` functions 
     2. Uses `stringr` functions in a data transformation pipeline
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -168,8 +168,8 @@ Below each learning objective is a list of general expectations for meeting that
     1. Uses ate least 2 unique `forcats` functions or one function in 2 unique contexts (with different purposes)
     2. Uses `forcats` functions in a data transformation pipeline
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -180,17 +180,17 @@ Below each learning objective is a list of general expectations for meeting that
     1. Creates at least 2 figures with different `geom_*` layers (e.g., a scatter plot and a bar plot)
     2. At least one plot is multi-variable
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
 14. Use dynamic aesthetics to group data
 
     1. Uses at least 2 unique data-mapped `aes()` arguments (e.g., color, shape, size) to group data in a plot in one or multiple plots
-
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+    2. Uses at least 1 static aesthetic (e.g., color, shape, size) that improves visual clarity without mapping to data
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -211,8 +211,8 @@ Below each learning objective is a list of general expectations for meeting that
     3. Variables display in plain English (e.g., "Age (years)" not "child_age_yrs"
     4. Uses at least 1 static aesthetic (e.g., color, shape, size) that improves visual clarity without mapping to data
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -224,8 +224,8 @@ Below each learning objective is a list of general expectations for meeting that
     2. Calculates summary/descriptive statistics for at least 1 non-numeric variable (e.g., frequencies, proportions)
     3. Presents results in narrative text, table, or plot
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -235,8 +235,8 @@ Below each learning objective is a list of general expectations for meeting that
     2. Performs at least 1 hypothesis test for factor data (e.g., chi-square, ANOVA)
     3. Presents results in narrative text, table, or plot
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -247,8 +247,8 @@ Below each learning objective is a list of general expectations for meeting that
     3. Discriminates between informative and non-informative statistics and presents only the former in narrative text
     4. Uses dynamic inline R code to render data-dependent text
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -299,8 +299,8 @@ Below each learning objective is a list of general expectations for meeting that
     3. Sets preferences/options in at least 1 code chunk
     4. Organizes setup chunks sensibly
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -312,8 +312,8 @@ Below each learning objective is a list of general expectations for meeting that
     4. All tables and figures are referenced in the narrative text (e.g., Figure 1)
     5. References render without error and link to the correct table/figure in pdf/html output
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -325,8 +325,8 @@ Below each learning objective is a list of general expectations for meeting that
     4. Results are not displayed as raw R output
     5. Chunks are organized sensibly and appear near the text they support
 
-        -   [ ] Objective attempt
-        -   [ ] Unique objective attempt
+        -   [x] Objective attempt
+        -   [x] Unique objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -447,6 +447,8 @@ Thoughtful reflections may earn engagement points.
 
 
 <!-- Reflection below this line -->
+
+###The additional unguided portion allowed me to demonstrate that I can leverage inferential statistics to test hypotheses and visualize them effectively. 
 
 
 

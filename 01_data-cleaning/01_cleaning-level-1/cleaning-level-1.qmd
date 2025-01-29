@@ -473,15 +473,14 @@ summary(clean.mtcars$wt)
 clean.mtcars<-clean.mtcars%>% mutate(
   wt_category=case_when(wt<= 2.58 ~ "Light",
                         wt>2.58 & wt<=3.61~"Medium",
-                        wt>3.61~"Heavy"),
-  
-  
-  #now I don't understand what is meant by "reverse the order of the levels", but I am assuming you mean "arrange them so that heavy appears first, then medium then light"
-#I will use the factor reverse technique I learned from stack overflow
-#https://stackoverflow.com/questions/30219971/best-practice-for-factor-and-reverse-in-r
-wt_category = factor(wt_category,levels=c("Heavy","Medium","Light")),
-)
-clean.mtcars<-clean.mtcars%>% arrange(wt_category)
+                        wt>3.61~"Heavy")
+  )%>%
+  mutate(wt_category = factor(wt_category,levels=c("Heavy","Medium","Light"))
+  ) %>%
+arrange(wt_category)%>%#arranges the factors 
+mutate(
+  wt_category=fct_rev(wt_category)
+  ) #reversing using fct_rev,which comes from the forcats package
 
 #now to ensure the levels are reversed and are presented as such 
 levels(clean.mtcars$wt_category)
@@ -527,10 +526,7 @@ cleanfilter.mtcars
 #first, I will try to know the mtcars columns and 
 ?mtcars
 #so we see that vs (v-shaped or straight engine) and am (automatic or manual) are two logical variables. I will choose am for this question
-clean.mtcars<- clean.mtcars%>% mutate(am=as.logical(am))
-
-#to make it make sense , I will rename am to manual ? that way TRUE or FALSE makes sense
-clean.mtcars<-clean.mtcars%>%rename("manual?"=am)
+clean.mtcars<- clean.mtcars%>% mutate(Manual =as.logical(am))
 
 clean.mtcars
 ```
@@ -573,9 +569,10 @@ Let's demonstrate how we can create a new column and use the StringR library to 
 #I used this regex cheat sheet from gitlab:https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf
 
 #I will create a new column and save the first word in the model to it 
+library(stringr) #the stringr library allows me to manipulate regex and text 
 #Since there are no whitespaces before the first word, I am telling the code to detect the first whitespace, I am telling the code to EXTRACT EVERYTHING BEFORE THE FIRST SPACE 
 
-library(stringr)
+
 clean.mtcars<-clean.mtcars%>% mutate(Make= str_extract(model,"^[^\\s]+"))
 
 ```
@@ -615,20 +612,27 @@ Hp.by.country<-clean.mtcars%>%group_by(Country)%>%summarize(Average.Horsepower=r
 
 
 print(Hp.by.country)
-#p-value equals MURRICCCAA
-
+#Let's test this mini hypothesis: USA cars usually outrank other countries in terms of average horsepower
+if(Hp.by.country[1,1]=="USA") {
+  print("USA scored first in Average Horsepower ranking ") 
+} else {
+    print("USA did not rank first in Average Horsepower ranking")
+  }
 #ok now let's see horsepower distributed by weight aggregated for all countries
-Horsepower.by.Weight<-clean.mtcars%>%mutate(hppwt=round(hp/wt,2))%>%group_by(Country)%>%summarize(Average.HorsepowerbyWeight=round(mean(hppwt),2))%>%arrange(desc(Average.HorsepowerbyWeight))
+Horsepower.by.Weight<-clean.mtcars%>%mutate(hppwt=round(hp/wt,2))%>%group_by(Country)%>%summarize(HpbW=round(mean(hppwt),2))%>%arrange(desc(HpbW))
 
 print(Horsepower.by.Weight)
 
-clean.mtcars$Make=sub("\\s.*","",clean.mtcars$model)
+#Let's see how the U.S did in this ranking
+#since the table above is ordered descending in terms of Horsepower by Weight,the rank is simple the number of rows at a certain point. 
+USA_rank<-Horsepower.by.Weight%>% mutate(Rank=row_number())%>%filter(Country=="USA")%>%pull(Rank)
 
-#USA came in third. 
+paste("The USA's rank in horsepower/weight is: ",USA_rank)#paste makes it easier to mix strings and numberic variables
+
 ``` 
 
 ### STEP 4: Create descriptive plots and figures 
-```{r miniproject1-unguided-additional-basic statistics and rankings}
+```{r miniproject1-unguided-additional-descriptive_visualization}
 #The packages ggplot2 and ggpattern will allows to maximally customize our plots and figures. 
 
 library(ggplot2)
@@ -636,40 +640,26 @@ library(ggpattern)
 
 #We will start with the one of the tables created for Average Horsepower/Weight for each country
 #this line below is the setup for the plot , but not the plot itself 
-ggplot(data = Horsepower.by.Weight, aes(x = Country, y = Average.HorsepowerbyWeight, fill = Country)) + #I want each country to have its own color, thus the fill = Country argument
-
-  geom_col(color="black", #setting the borders of the bars as black
+ggplot(data = Horsepower.by.Weight, aes(x = Country, y = HpbW, fill = Country)) + #I want each country to have its own color, thus the fill = Country argument
+           geom_col(color="black", #setting the borders of the bars as black
            width=0.7)+ #the width of each bar set to have a width of .7
-           theme_minimal()+ #sets the background as white 
-           theme(axis.text.x=element_text(angle=45,hjust=1)+#makes the x-labels rotated, hjust adjusts it horizontally
-           theme(plot.title= element_text(hjust=0.5))
+           labs(title="Figure 1: Horsepower By Weight distribution through Countries",
+                x="Country",y="Horsepower/Weight(hp/1000lbs)")+
+           #makes the x-labels rotated, hjust adjusts it horizontally
+           theme(plot.title= element_text(size=12,face="bold",hjust=0.5),#centered title and adjusts font
+                 axis.title.x=element_text(size=10,face="italic"),#adjust font for x-axis label
+                 axis.title.y=element_text(size=10,face="italic"),#adjust font for y-axis label
            )
             
 
-# Let's try another set of data with another type of plot s
-# to ensure that the cylinders are dealt with discretely rather than a continuum
-# I will convert the cyl column to factor
-clean.bp.mtcars<-clean.mtcars #creating an intermediary database with cyl as factors
-clean.bp.mtcars$cyl<-as.factor(clean.bp.mtcars$cyl)
-#Now will plot the hp as y-axis and cyl as x-axis in a boxplot
-ggplot(data= clean.bp.mtcars, aes(x=cyl,hp,fill=cyl))+
-  geom_boxplot_pattern(color="black", #here is where I make use of the ggpatterns package
-                       pattern = "stripe", #I will a stripe pattern as an aesthetic
-                       pattern_color="white", #the stripes will be colored with white
-                       pattern_angle=45,#the stripes will be tilted at an angle of 45 deg
-                       pattern_density=0.01, # a single stripe will be 0.01 thick
-                       pattern_spacing=0.02) + #the space between them will be 0.02
-                       labs(title= "Figure 1: Horsepower Generated by no. of Cylinders",
-                            x="No. of Cylinders",
-                            y="Horsepower (hp)",
-                            fill="No. of Cylinders")
+
 
 ```
 ### STEP 5: Hypothesis testing and visualization
-##### Establishing a Hypothesis and a test
+##### 5.1 Establishing a Hypothesis and a test (Linear Mixed Effects Regression Test)
 With the data available after cleaning, we can now come up with a hypothesis by inspecting the data, 
 and testing our hypothesis statistically.
-```{r miniproject1-unguided-additional-Hypothesis,testing and visualization}
+```{r miniproject1-unguided-additional-Hypothesis,lm-testing}
 #| label: The Hypothesis and the Test 
 # My hypothesis is that cars with higher weight will have lower mpg 
 #in linear regression terms, weight (wt) is a negative coefficient of mpg 
@@ -679,7 +669,73 @@ summary(H1.test)
 #Let's include another variable , horsepower, as a predictor for mpg (hypothesis: it is a negative predictor)
 H2.test<-lm(mpg~wt+hp,data=clean.mtcars)
 summary(H2.test)
-#Horsepower is a significant negative predictor but with a minimal effect
+```
+#####Horsepower is a significant negative predictor but with a minimal effect
+#### 5.2 Generating Inferential Plot for Linear Mixed Effects Regression
+```{r miniproject1-unguided-additional-Hypothesis,lm-visualization}
+ggplot(clean.mtcars,aes(x=hp,y=mpg))+
+  geom_point(color="blue")+ #Scatterplot "points"
+  geom_smooth(method="lm",se=TRUE,#regression line with shaded region (se=TRUE)
+              formula=y~x,color="red" ) +
+  labs(
+    title="Figure 2: Regression of MpG on Horsepower",
+    x="Horsepower(hp)",
+    y="Miles per Gallon (mpg)"
+  ) +
+  theme(
+    panel.background=element_rect(fill="white"),#background color set to white
+    panel.grid.major=element_line(color="gray"),#setting the grid lines to be gray on the white background
+    panel.grid.minor=element_line(color="gray"),
+    plot.title = element_text(size=12,face="bold",hjust=0.5), #centered title and adjusted font
+    axis.title.x=element_text(size=10,face="italic"), #adjusted font for x-axis
+    axis.title.y=element_text(size=10,face="italic") #adjusted font for y-axis
+  )
+```
+##### 5.3 Establishing a Hypothesis and a test (ANOVA test)
+###### Let's say I want to test how different transmision types (automatic v. manual) affect miles per gallon, so my hypothesis is that on average, the automatic transmission will have a lower mpg than the manual 
+```{r miniproject1-unguided-additional-Hypothesis,anova-testing}
+#to represent the factors clearly, I am adding a column that indicates automatic or manual as per the am column
+clean.mtcars<-clean.mtcars%>%mutate(Transmission = factor(case_when(am == 0 ~ "Automatic",am == 1 ~"Manual")))
+#running the anova test of how mpg is affected by transmission
+anova_test<-aov(mpg~factor(Transmission),data=clean.mtcars)
+summary(anova_test) #prints out the ANOVA test results
+```
+##### 5.4 Generating Inferential Plot for ANOVA model
+###### Now that we know that transmission is a statistically significant factor in mpg (p<0.001), let's visualize these results with a violin plot
+```{r miniproject1-unguided-additional-Hypothesis,anova-visualization}
+ggplot(clean.mtcars,aes(x=Transmission,y=mpg,fill=Transmission))+
+  geom_violin(trim=FALSE,alpha=0.8) + #80% opacity used for the violin plot,Trim deactivated for smoother ends
+  stat_summary(fun= mean, geom="crossbar",color="red") + # adding a line to the mean to ease the comparison
+  labs(
+    title="Figure 3: Comparing Transmission Types effect on Miles per Gallon",
+    x="Transmission Type",
+    y="Miles per Gallon(mpg)"
+  ) +
+  theme(
+     panel.background=element_rect(fill="white"),#background color set to white
+    panel.grid.major=element_line(color="gray"),#setting the grid lines to be gray on the white background
+    panel.grid.minor=element_line(color="gray"),
+    plot.title = element_text(size=12,face="bold",hjust=0.5), #centered title and adjusted font
+    axis.title.x=element_text(size=10,face="italic"), #adjusted font for x-axis
+    axis.title.y=element_text(size=10,face="italic") #adjusted font for y-axis
+  )
+  
+```
+##### 5.5 Multivariate Plot
+###### Let's see if we can add the number of cylinders,as well number of gears as a color and shape modulators when comparing between Horsepower and MpG
+```{r miniproject1-unguided-additional-Hypothesis,Multivariate Plot}
+ggplot(clean.mtcars,aes(x=hp,y=mpg,color=factor(cyl),shape=factor(gear))) + #cylinders is colors, no.gears is shape
+  geom_point(size=3) + #scatterplot with size 3 data points
+  labs(title="Figure 4: Horsepower v. Miles/Gallon with Gears and Cylinders ",x="Horsepower(hp)",y="Miles per Gallon (mpg)",color = "Number of Cylinders",shape="Number of Forward Gears")+
+  theme(
+    panel.background=element_rect(fill="white"),#background white 
+    panel.grid.major=element_line(color="black"),#gridlines are black
+    panel.grid.minor=element_line(color="black"),
+    plot.title = element_text(size=12,face="bold",hjust=0.5), #centered title and adjusted font
+    axis.title.x=element_text(size=10,face="italic"), #adjusted font for x-axis
+    axis.title.y=element_text(size=10,face="italic") #adjusted font for y-axis
+  )
+
 ```
 # Submission & Assessment
 
