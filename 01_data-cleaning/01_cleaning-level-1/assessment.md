@@ -96,8 +96,8 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [x] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
-        -   Grader comments:
+        -   [x] Objective met
+        -   Grader comments: ND - giving this to you but you've actually got one chunk that doesn't work! be sure you use relative paths whenever possible, because my computer doesn't have an /abdulaziz/ folder
 
 6.  Use arithmetic, comparison, and logical operators
 
@@ -106,7 +106,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [x] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 7.  Parse and define functions and arguments
@@ -127,7 +127,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [x] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 ### Tidyverse
@@ -140,7 +140,7 @@ Below each learning objective is a list of general expectations for meeting that
         -   [x] Objective attempt
         -   [x] Unique objective attempt
         -   [ ] Objective met
-        -   Grader comments:
+        -   Grader comments: ND - I gave you the point for no errors despite the error caused by reading/writing absolute paths, so I'm not going to give you this one
 
 10. Use `dplyr` and `tidyr` functions to transform data
 
@@ -150,7 +150,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [x] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 11. Use `stringr` functions to work with string variables
@@ -160,7 +160,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [x] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 12. Use `forcats` functions to work with factor variables
@@ -170,7 +170,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [x] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 ### Data visualization with ggplot2
@@ -182,7 +182,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [x] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 14. Use dynamic aesthetics to group data
@@ -191,7 +191,7 @@ Below each learning objective is a list of general expectations for meeting that
     2. Uses at least 1 static aesthetic (e.g., color, shape, size) that improves visual clarity without mapping to data
         -   [x] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 15. Use facets to create parallel plots
@@ -213,7 +213,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [x] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 ### Data analysis
@@ -226,7 +226,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [x] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 18. Perform simple hypothesis testing analyses for multiple data types
@@ -237,7 +237,7 @@ Below each learning objective is a list of general expectations for meeting that
 
         -   [x] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 19. Present and interpret statistics in manuscript narrative
@@ -250,7 +250,7 @@ Below each learning objective is a list of general expectations for meeting that
         -   [x] Objective attempt
         -   [x] Unique objective attempt
         -   [ ] Objective met
-        -   Grader comments:
+        -   Grader comments: ND - for this point I want to see the actual narrative text that presents and interprets the results of your analyses, like what you'd see in a journal article
 
 ### BibTeX
 
@@ -302,7 +302,7 @@ Below each learning objective is a list of general expectations for meeting that
         -   [x] Objective attempt
         -   [x] Unique objective attempt
         -   [ ] Objective met
-        -   Grader comments:
+        -   Grader comments: ND - I may be missing is (let me know if I am) but the only setup chunks I see are the ones I provided in the exercise
 
 24. Render publication-quality tables, figures, and images from code chunks
 
@@ -315,7 +315,7 @@ Below each learning objective is a list of general expectations for meeting that
         -   [x] Objective attempt
         -   [x] Unique objective attempt
         -   [ ] Objective met
-        -   Grader comments:
+        -   Grader comments: ND - your plots are great, but the points in this section are about the integration of markdown and code 
 
 25. Execute descriptive analyses and/or hypothesis testing in code chunks
 
@@ -328,7 +328,7 @@ Below each learning objective is a list of general expectations for meeting that
         -   [x] Objective attempt
         -   [x] Unique objective attempt
         -   [ ] Objective met
-        -   Grader comments:
+        -   Grader comments: ND - same as above, points in this section are about the integration of markdown and code and effective use of notebooks, you definitely get the points for the analyses themselves!
 
 ### R Markdown and quarto
 
@@ -462,13 +462,13 @@ Thoughtful reflections may earn engagement points.
 
 ## Grader feedback
 
--   Grader:
--   Date:
--   Points toward unique objectives (up to 20):
--   Additional points (up to 20):
+-   Grader: Natalie Dowling
+-   Date: 2/4/25
+-   Points toward unique objectives (up to 20): 11
+-   Additional points (up to 20): 1 (for unassessed #1)
 -   TA provisional engagement points (up to 10):
--   Final approved engagement points (up to 10):
--   Total points (up to 50):
+-   Final approved engagement points (up to 10): 8
+-   Total points (up to 50): 20 -- great job!!
 
 Engagement points are awarded for going above and beyond the expectations of the project and are not guaranteed on any given submission.. Demonstrating the assessed learning objectives earns you points in those categories, but engagement points are awarded for exceptional effort, creativity, or skill.
 
@@ -476,4 +476,11 @@ TAs may recommend engagement points provisionally, but the instructor will make 
 
 Additional comments: 
 
+ND: WOW! Talk about going above and beyond! You've done a fantastic job not only demonstrating the intended skills but using them in creative ways well past what the assignment asks for. The way you continued working with the data after the structured part is really impressive and goes much further than "cleaning" skills. I also really appreciate your informative comments throughout -- made it really easy to follow along! 
+
+The one thing I'll suggest you keep in mind in future work is using notebooks and code blocks effectively and with best practices for style/consistency. One thing that has the potential to break things is that you've given most code chunks two names -- one inline and one in the comment label format. Stick to the comment label format to be consistent with qmd best practices. Remember also that anything outside of code chunks is treated as markdown, so every time you insert a line starting with `#` it's treated as a top level header, which is definitely not what you want. If you're working in a notebook, take advantage of the markdown capacity to just write text as you want to see it. If you do want to add comments outside of code chunks, use html comments `<!-- comment here -->` to keep them from rendering as headers. Within your code itself, I think you can clean it up a bit style-wise. Not the code choices, but things like spacing, naming conventions, etc.
+
+Also, I'm giving you a point for unassessed objective #1 (great comments) because it's very clear, but in the future you'll only get points for things you flag as things you think you should get points for, so be sure to look over those at the end of the assessment and give yourself credit where credit is due.
+
+Great work overall! I'm really impressed with what you've done here. Keep it up!
 
