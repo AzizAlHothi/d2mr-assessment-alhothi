@@ -52,19 +52,19 @@ Below each learning objective is a list of general expectations for meeting that
     2.  Uses relative paths correctly
     3.  Does not have duplicate/redundant elements
 
-        -   [x] Objective attempt
+        -   [ ] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
-        -   Grader comments: 
+        -   [x] Objective met
+        -   Grader comments: Only one attempt should be marked by you, either unique objective attempt (first time attemp) or objective attempt (not the first time)
 
 2.  Maintain an informative and up-to-date README.md
 
     1.  Includes description of repo purpose, data use, research questions, etc.
     2.  Outlines the repo structure with file tree or similar
 
-        -   [x] Objective attempt
+        -   [ ] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 3.  Integrate a GitHub repo with an R studio project, including .gitignore file
@@ -72,9 +72,9 @@ Below each learning objective is a list of general expectations for meeting that
     1.  All scripts run and all notebooks render if the repo is cloned to another location
     2.  .gitignore comprehensively excludes unnecessary, private, and very large files and is be commeted appropriately
 
-        -   [x] Objective attempt
+        -   [ ] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 4.  Effectively use version control
@@ -82,9 +82,9 @@ Below each learning objective is a list of general expectations for meeting that
     1.  Used frequent, informative commit messages
     2.  Relies on document revisions rather than manually created new versions
 
-        -   [x] Objective attempt
+        -   [ ] Objective attempt
         -   [x] Unique objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 ### R programming
@@ -465,13 +465,13 @@ I also exercises some rudimentary essentials in data cleaning and analysis , tho
 
 ## Grader feedback
 
--   Grader:
--   Date:
--   Points toward unique objectives (up to 20):
+-   Grader: Mian
+-   Date: Feb 17
+-   Points toward unique objectives (up to 20): 4
 -   Additional points (up to 20):
 -   TA provisional engagement points (up to 10):
--   Final approved engagement points (up to 10):
--   Total points (up to 50):
+-   Final approved engagement points (up to 10): 1
+-   Total points (up to 50): 5
 
 Engagement points are awarded for going above and beyond the expectations of the project and are not guaranteed on any given submission.. Demonstrating the assessed learning objectives earns you points in those categories, but engagement points are awarded for exceptional effort, creativity, or skill.
 
@@ -479,4 +479,4 @@ TAs may recommend engagement points provisionally, but the instructor will make 
 
 Additional comments: 
 
-
+By Mian: Good job! Glad to see that you are clear about how to maintain a standardized GitHub repository, which is essential in the project management and collaboration.
