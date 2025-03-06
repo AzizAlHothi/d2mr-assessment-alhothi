@@ -6,14 +6,14 @@ This document tracks your progress meeting 20 unique objectives across all mini-
 
 ## Unique objectives
 
-2/5/25: 11/20
+3/5/25: 15/20
 
 ## GitHub and R Studio
 
-1.  [ ] Create and maintain a repo with sensible organization and naming conventions
-2.  [ ] Maintain an informative and up-to-date README.md
-3.  [ ] Integrate a GitHub repo with an R studio project, including .gitignore file
-4.  [ ] Effectively use version control
+1.  [x] Create and maintain a repo with sensible organization and naming conventions
+2.  [x] Maintain an informative and up-to-date README.md
+3.  [x] Integrate a GitHub repo with an R studio project, including .gitignore file
+4.  [x] Effectively use version control
 
 ## R programming
 
